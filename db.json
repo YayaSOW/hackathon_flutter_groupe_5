@@ -12,9 +12,9 @@
   "etudiants": [
     {
       "id": "1",
-      "nom": "Doe",
-      "prenom": "John",
-      "login": "john",
+      "nom": "Diop",
+      "prenom": "Ousmane",
+      "login": "ousmane",
       "telephone": "123456",
       "password": "pass",
       "matricule": "M123",

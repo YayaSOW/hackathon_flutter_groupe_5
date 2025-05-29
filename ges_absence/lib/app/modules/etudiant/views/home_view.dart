@@ -3,89 +3,145 @@ import 'package:ges_absence/app/routes/app_routes.dart';
 import 'package:ges_absence/theme/app_theme.dart';
 import 'package:ges_absence/theme/colors.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../controllers/home_controller.dart';
 import '../controllers/auth_controller.dart';
-import '../widgets/menu_item.dart';
 
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final etudiant = Get.find<AuthController>().etudiant.value;
 
-    //  print('Étudiant dans HomeView: ${etudiant?.toJson()}');
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Etudiant Dashboard', style: AppTheme.appBarStyle),
+        title: Text('Mon espace étudiant', style: AppTheme.appBarStyle),
         backgroundColor: AppColors.primaryColor,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: AppColors.secondaryColor,
-                  child: Text(
-                    etudiant?.prenom.substring(0, 1) ?? '',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // ====== QR CODE avec fond orange ======
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                color: const Color(0xFFED9C37),
+                child: Column(
                   children: [
-                    Text(
-                      '${etudiant?.prenom} ${etudiant?.nom}',
-                      style: AppTheme.titleStyle,
+                    QrImageView(
+                      // ➕ Tu peux encoder plus d’infos si tu veux
+                      data:
+                          etudiant != null
+                              ? '${etudiant.prenom} ${etudiant.nom} - ${etudiant.matricule}'
+                              : 'Inconnu',
+                      version: QrVersions.auto,
+                      size: 150.0,
+                      backgroundColor: Colors.white,
                     ),
-                    Text(
-                      etudiant?.matricule ?? '',
-                      style: AppTheme.subtitleStyle,
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Scanner",
+                      style: TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+
+              // ====== INFOS ETUDIANT arrondi ======
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  // borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.grey,
+                      child: Icon(Icons.person, color: Colors.white, size: 30),
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${etudiant?.prenom} ${etudiant?.nom}',
+                          style: AppTheme.titleStyle,
+                        ),
+                        Text(
+                          etudiant?.telephone ?? '',
+                          style: AppTheme.subtitleStyle,
+                        ),
+                        Text(
+                          etudiant?.matricule ?? '',
+                          style: AppTheme.subtitleStyle,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // ====== LISTE MENU stylisée ======
+              _buildMenuItem(
+                icon: Icons.school,
+                label: 'Mes Cours',
+                onTap: () => Get.toNamed(AppRoutes.COURS),
+              ),
+              _buildMenuItem(
+                icon: Icons.list_alt,
+                label: 'Mes Absences',
+                onTap: () => Get.toNamed(AppRoutes.ABSENCES),
+              ),
+              _buildMenuItem(
+                icon: Icons.access_time,
+                label: 'Mes Retards',
+                onTap: () => Get.toNamed(AppRoutes.RETARDS),
+              ),
+              _buildMenuItem(
+                icon: Icons.logout,
+                label: 'Me Déconnecter',
+                color: Colors.red,
+                onTap: () => Get.find<AuthController>().logout(),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
-          Expanded(
-            child: GridView.count(
-              padding: const EdgeInsets.all(16),
-              crossAxisCount: 2,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              children: [
-                MenuItem(
-                  title: 'Scanner',
-                  icon: Icons.qr_code_scanner,
-                  onTap: () => Get.toNamed(AppRoutes.SCANNER),
-                ),
-                MenuItem(
-                  title: 'Mes Cours',
-                  icon: Icons.school,
-                  onTap: () => Get.toNamed(AppRoutes.COURS),
-                ),
-                MenuItem(
-                  title: 'Mes Absences',
-                  icon: Icons.list_alt,
-                  onTap: () => Get.toNamed(AppRoutes.ABSENCES),
-                ),
-                MenuItem(
-                  title: 'Mes Retards',
-                  icon: Icons.access_time,
-                  onTap: () => Get.toNamed(AppRoutes.RETARDS),
-                ),
-                MenuItem(
-                  title: 'Me Déconnecter',
-                  icon: Icons.logout,
-                  onTap: () => Get.find<AuthController>().logout(),
-                  color: Colors.red,
-                ),
-              ],
-            ),
+        ),
+      ),
+    );
+  }
+
+  // 🔧 Méthode pour créer un ListTile stylisé
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    Color color = Colors.black,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Card(
+        elevation: 4,
+        shadowColor: Colors.grey.withOpacity(0.3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: ListTile(
+          leading: Icon(icon, color: color),
+          title: Text(
+            label,
+            style: TextStyle(color: color, fontWeight: FontWeight.w600),
           ),
-        ],
+          onTap: onTap,
+        ),
       ),
     );
   }
