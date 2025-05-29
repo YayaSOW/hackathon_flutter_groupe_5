@@ -8,24 +8,32 @@ import '../models/vigile.dart';
 class ApiService extends GetConnect {
   final String baseUrl;
 
+  // ApiService({this.baseUrl = 'http://10.0.2.2:3000'});
   ApiService({this.baseUrl = 'http://localhost:3000'});
 
-  Future<Vigile?> loginVigile(String login, String password) async {
-    try {
-      final response = await post(
-        '$baseUrl/auth/login',
-        {'login': login, 'password': password},
-        headers: {'Content-Type': 'application/json'},
-      );
+ Future<Vigile?> loginVigile(String login, String password) async {
+  try {
+    final response = await http.get(Uri.parse('$baseUrl/vigiles'));
+    
+    // print('Réponse de l\'API: ${response.body}');
+    
+    if (response.statusCode == 200) {
+      final List<dynamic> vigilesJson = jsonDecode(response.body);
+      // print('Réponse décodée: $vigilesJson');
 
-      if (response.statusCode == 200) {
-        return Vigile.fromJson(response.body);
+      for (var vigileJson in vigilesJson) {
+        if (vigileJson['login'] == login && vigileJson['password'] == password) {
+          return Vigile.fromJson(vigileJson);
+        }
       }
-      return null;
-    } catch (e) {
-      return null;
     }
+    return null;
+  } catch (e) {
+    print('Erreur lors de la connexion : $e');
+    return null;
   }
+}
+
 
   Future<List<Presence>> getPresencesForVigile(String etudiantId) async {
     try {
