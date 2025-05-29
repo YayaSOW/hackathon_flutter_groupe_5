@@ -35,7 +35,7 @@ class LoginView extends GetView<AuthController> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'iSM',
+                      'ISM',
                       style: AppTheme.titleStyle.copyWith(
                         color: AppColors.primaryColor,
                         fontSize: 28,

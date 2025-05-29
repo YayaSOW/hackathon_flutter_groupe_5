@@ -17,9 +17,9 @@ class HomeController extends GetxController {
   Future<void> fetchPresences() async {
     try {
       isLoading(true);
-      final vigileId = Get.find<AuthController>().vigile.value?.id;
-      if (vigileId != null) {
-        final result = await apiService.getPresencesForVigile(vigileId);
+      final etudiantId = Get.find<AuthController>().etudiant.value?.id;
+      if (etudiantId != null) {
+        final result = await apiService.getPresences(etudiantId);
         presences.assignAll(result);
       }
     } catch (e) {

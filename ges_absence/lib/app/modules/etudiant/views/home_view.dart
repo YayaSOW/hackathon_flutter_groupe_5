@@ -10,11 +10,12 @@ import '../widgets/menu_item.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    final vigile = Get.find<AuthController>().vigile.value;
+    final etudiant = Get.find<AuthController>().etudiant.value;
 
+    //  print('Étudiant dans HomeView: ${etudiant?.toJson()}');
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vigile Dashboard', style: AppTheme.appBarStyle),
+        title: Text('Etudiant Dashboard', style: AppTheme.appBarStyle),
         backgroundColor: AppColors.primaryColor,
       ),
       body: Column(
@@ -27,7 +28,7 @@ class HomeView extends GetView<HomeController> {
                   radius: 30,
                   backgroundColor: AppColors.secondaryColor,
                   child: Text(
-                    vigile?.prenom.substring(0, 1) ?? '',
+                    etudiant?.prenom.substring(0, 1) ?? '',
                     style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
                 ),
@@ -36,11 +37,11 @@ class HomeView extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${vigile?.prenom} ${vigile?.nom}',
+                      '${etudiant?.prenom} ${etudiant?.nom}',
                       style: AppTheme.titleStyle,
                     ),
                     Text(
-                      vigile?.telephone ?? '',
+                      etudiant?.matricule ?? '',
                       style: AppTheme.subtitleStyle,
                     ),
                   ],

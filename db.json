@@ -14,7 +14,7 @@
       "id": "1",
       "nom": "Doe",
       "prenom": "John",
-      "login": "john.doe",
+      "login": "john",
       "telephone": "123456",
       "password": "pass",
       "matricule": "M123",

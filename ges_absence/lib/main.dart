@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoutes.VIGILE_HOME,
           page: () => HomeView(),
-          binding: VigileBinding(),
+          // binding: VigileBinding(),
         ),
       ],
       debugShowCheckedModeBanner: false,
