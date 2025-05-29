@@ -22,22 +22,26 @@ class HomeView extends GetView<HomeController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ====== QR CODE avec fond orange ======
+              // ====== QR CODE ======
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 color: const Color(0xFFED9C37),
                 child: Column(
                   children: [
-                    QrImageView(
-                      // ➕ Tu peux encoder plus d’infos si tu veux
-                      data:
-                          etudiant != null
-                              ? '${etudiant.prenom} ${etudiant.nom} - ${etudiant.matricule}'
-                              : 'Inconnu',
-                      version: QrVersions.auto,
-                      size: 150.0,
-                      backgroundColor: Colors.white,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: QrImageView(
+                        data: etudiant != null
+                            ? '${etudiant.prenom} ${etudiant.nom} - ${etudiant.matricule}'
+                            : 'Inconnu',
+                        version: QrVersions.auto,
+                        size: 150.0,
+                        backgroundColor: Colors.transparent,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -48,16 +52,15 @@ class HomeView extends GetView<HomeController> {
                 ),
               ),
 
-              // ====== INFOS ETUDIANT arrondi ======
+              // ====== INFOS ETUDIANT ======
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  // borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20), 
+                    topRight: Radius.circular(20), 
                   ),
                 ),
                 child: Row(
@@ -91,7 +94,7 @@ class HomeView extends GetView<HomeController> {
 
               const SizedBox(height: 20),
 
-              // ====== LISTE MENU stylisée ======
+              // ====== LISTE MENU ======
               _buildMenuItem(
                 icon: Icons.school,
                 label: 'Mes Cours',
@@ -121,7 +124,6 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  // 🔧 Méthode pour créer un ListTile stylisé
   Widget _buildMenuItem({
     required IconData icon,
     required String label,
@@ -132,6 +134,7 @@ class HomeView extends GetView<HomeController> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       child: Card(
         elevation: 4,
+        // ignore: deprecated_member_use
         shadowColor: Colors.grey.withOpacity(0.3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: ListTile(
