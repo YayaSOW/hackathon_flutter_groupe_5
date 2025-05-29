@@ -17,7 +17,7 @@ class AuthController extends GetxController {
       // if (true) {
         etudiant.value = result;
         //  print('Étudiant connecté: ${etudiant.value?.toJson()}');
-        Get.offNamed(AppRoutes.VIGILE_HOME);
+        Get.offNamed(AppRoutes.Etudiant_HOME);
       } else {
         Get.snackbar('Erreur', 'Identifiants incorrects');
       }

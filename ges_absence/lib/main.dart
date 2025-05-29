@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoutes.LOGIN,
           page: () => LoginView(),
-          binding: VigileBinding(),
+          binding: EtudiantBinding(),
         ),
         GetPage(
-          name: AppRoutes.VIGILE_HOME,
+          name: AppRoutes.Etudiant_HOME,
           page: () => HomeView(),
           // binding: VigileBinding(),
         ),
