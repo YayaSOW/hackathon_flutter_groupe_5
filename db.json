@@ -1,0 +1,33 @@
+{
+    "vigiles": [
+        {
+            "id": "1",
+            "nom": "Traore",
+            "prenom": "Ousmane",
+            "login": "vigile1",
+            "telephone": "771234567",
+            "password": "password123"
+        }
+    ],
+    "presences": [
+        {
+            "id": "1",
+            "vigileId": "1",
+            "etudiant": {
+                "id": "101",
+                "nom": "Diop",
+                "prenom": "Amadou",
+                "matricule": "ISM2024-0001",
+                "status": true
+            },
+            "cours": {
+                "id": "201",
+                "nomCours": "Mathématiques",
+                "date": "2025-06-01T08:00:00Z",
+                "duree": 90
+            },
+            "date": "2025-05-29T09:30:00Z",
+            "typePresence": 0
+        }
+    ]
+}
