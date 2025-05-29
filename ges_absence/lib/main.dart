@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'iSM Vigile',
+      title: 'ISM Ges Absence',
       theme: ThemeData(
         primaryColor: AppColors.primaryColor,
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: AppRoutes.VIGILE_HOME,
           page: () => HomeView(),
+          binding: VigileBinding(),
         ),
       ],
       debugShowCheckedModeBanner: false,

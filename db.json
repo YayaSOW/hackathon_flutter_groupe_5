@@ -4,9 +4,29 @@
       "id": "1",
       "nom": "Traore",
       "prenom": "Ousmane",
-      "login": "vigile1",
+      "login": "vigile",
       "telephone": "771234567",
-      "password": "password123"
+      "password": "pass"
+    }
+  ],
+  "etudiants": [
+    {
+      "id": "1",
+      "nom": "Doe",
+      "prenom": "John",
+      "login": "john.doe",
+      "telephone": "123456",
+      "password": "pass",
+      "matricule": "M123",
+      "status": true
+    }
+  ],
+  "presences": [
+    {
+      "id": "1",
+      "date": "2023-10-20T08:00:00Z",
+      "typePresence": "PRESENT",
+      "etudiant": { "id": "1" }
     }
   ]
 }
