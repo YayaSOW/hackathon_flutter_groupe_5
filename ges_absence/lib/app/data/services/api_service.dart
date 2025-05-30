@@ -7,10 +7,9 @@ import 'package:ges_absence/app/data/models/vigile.dart';
 import 'package:ges_absence/app/data/models/presence.dart';
 
 class ApiService {
-  final String baseUrl;
-
+  final String baseUrl = 'http://192.168.1.4:3000';
   // ApiService({this.baseUrl = 'http://10.0.2.2:3000'}); 
-  ApiService({this.baseUrl = 'http://localhost:3000'}); 
+  //  ApiService({this.baseUrl = 'http://172.16.6.39 :3000'}); 
 
   Future<Etudiant?> loginEtudiant(String login, String password) async {
     try {
@@ -20,6 +19,7 @@ class ApiService {
         headers: {'Accept': 'application/json'},
       );
       // print('Corps de la réponse: ${response.body}');
+      
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         if (data.isNotEmpty) {

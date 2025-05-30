@@ -44,56 +44,56 @@ class VigileEtudiantView extends GetView<VigileHomeController> {
               style: AppTheme.subtitleStyle,
             ),
             Text(
-              'Statut: ${etudiant.status == true ? "Actif" : "Inactif"}',
+              'Statut: ${etudiant.status == true ? "A jour" : " Pas à jour"}',
               style: AppTheme.subtitleStyle,
             ),
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () => controller.markPresence(
-                            etudiant.id!,
-                            TypePresence.PRESENT.name,
-                          )
-                      : null,
-                  child: const Text('✅ Valider Présence'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  ),
+                    Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ElevatedButton(
+                onPressed: etudiant.id != null
+                    ? () => controller.markPresence(
+                          etudiant.id!,
+                          TypePresence.PRESENT.name,
+                        )
+                    : null,
+                child: const Text('✅ Valider Présence'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () => controller.markPresence(
-                            etudiant.id!,
-                            TypePresence.RETARD.name,
-                          )
-                      : null,
-                  child: const Text('Retard'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: etudiant.id != null
+                    ? () => controller.markPresence(
+                          etudiant.id!,
+                          TypePresence.RETARD.name,
+                        )
+                    : null,
+                child: const Text('Retard'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orange,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () => controller.markPresence(
-                            etudiant.id!,
-                            TypePresence.ABSENT.name,
-                          )
-                      : null,
-                  child: const Text('❌ Refuser Présence'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  ),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: etudiant.id != null
+                    ? () => controller.markPresence(
+                          etudiant.id!,
+                          TypePresence.ABSENT.name,
+                        )
+                    : null,
+                child: const Text('❌ Refuser Présence'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 ),
-              ],
-            ),
+              ),
+            ],
+          ),
           ],
         ),
       ),

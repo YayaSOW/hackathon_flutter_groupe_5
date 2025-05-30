@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
 
       initialBinding: GlobalBinding(),
       initialRoute: AppRoutes.VIGILE_LOGIN,
-
       
       getPages: [
         GetPage(
