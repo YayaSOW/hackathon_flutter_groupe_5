@@ -5,4 +5,8 @@ abstract class AppRoutes {
   static const COURS = '/cours';
   static const ABSENCES = '/absences';
   static const RETARDS = '/retards';
+  static const VIGILE_HOME = '/vigile-home';
+  static const VIGILE_SCAN = '/vigile-scan';
+  static const VIGILE_ETUDIANT = '/vigile-etudiant';
+  static const VIGILE_LOGIN = '/vigile-login';
 }
