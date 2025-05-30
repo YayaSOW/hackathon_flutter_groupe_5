@@ -53,4 +53,28 @@ class ApiService {
       return [];
     }
   }
+  Future<void> submitJustification({
+    required String presenceId,
+    required String reason,
+    required String filePath,
+  }) async {
+    try {
+      // Simuler une requête PATCH pour mettre à jour la présence avec la justification
+      final response = await http.patch(
+        Uri.parse('$baseUrl/presences/$presenceId'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'justification': {
+            'reason': reason,
+            'filePath': filePath, // À remplacer par un vrai upload de fichier si nécessaire
+          },
+        }),
+      );
+      if (response.statusCode != 200) {
+        throw Exception('Erreur lors de la soumission: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Erreur lors de la soumission de la justification: $e');
+    }
+  }
 }

@@ -1,49 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:ges_absence/app/modules/etudiant/controllers/absence_controller.dart';
-import 'package:ges_absence/app/modules/etudiant/views/justification_view.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
+import 'package:ges_absence/app/modules/etudiant/controllers/retards_controller.dart';
 import 'package:ges_absence/theme/colors.dart';
-// import 'justification_view.dart'; // Nouvelle vue pour la justification
 
-class AbsencesView extends GetView<AbsencesController> {
-  const AbsencesView({super.key});
+class RetardsView extends GetView<RetardsController> {
+  const RetardsView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Mes Absences"),
+        title: const Text("Mes Retards"),
         backgroundColor: AppColors.primaryColor,
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      body: Obx(() => controller.absences.isEmpty
-          ? const Center(child: Text("Aucune absence enregistrée", style: TextStyle(color: Colors.grey)))
+      body: Obx(() => controller.retards.isEmpty
+          ? const Center(child: Text("Aucun retard enregistré", style: TextStyle(color: Colors.grey)))
           : ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: controller.absences.length,
+              itemCount: controller.retards.length,
               itemBuilder: (context, index) {
-                final absence = controller.absences[index];
+                final retard = controller.retards[index];
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   elevation: 4,
                   color: AppColors.primaryColor.withOpacity(0.2),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   child: ListTile(
-                    leading: const Icon(Icons.warning, color: AppColors.secondaryColor),
+                    leading: const Icon(Icons.access_time, color: AppColors.secondaryColor),
                     title: Text(
-                      absence.cours.nomCours,
+                      retard.cours.nomCours,
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "${absence.date.day}/${absence.date.month}/${absence.date.year} • Raison: ${absence.typePresence == TypePresence.ABSENT ? 'Absence' : 'Non définie'}",
+                      "${retard.date.day}/${retard.date.month}/${retard.date.year} • Heure: "
+                      "${retard.cours.heureDebut.hour}:${retard.cours.heureDebut.minute.toString().padLeft(2, '0')} - "
+                      "${retard.cours.heureFin.hour}:${retard.cours.heureFin.minute.toString().padLeft(2, '0')}",
                       style: const TextStyle(color: Colors.white70),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit, color: AppColors.secondaryColor),
-                      onPressed: () {
-                        Get.to(() => JustificationView(absence: absence));
-                      },
                     ),
                   ),
                 );

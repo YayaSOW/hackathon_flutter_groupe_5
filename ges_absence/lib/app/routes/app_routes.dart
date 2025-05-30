@@ -5,4 +5,5 @@ abstract class AppRoutes {
   static const COURS = '/cours';
   static const ABSENCES = '/absences';
   static const RETARDS = '/retards';
+  static const JUSTIFICATION = '/justification';
 }
