@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:ges_absence/app/bindings/global_binding.dart';
 import 'package:ges_absence/app/bindings/etudiant_binding.dart';
+import 'package:ges_absence/app/bindings/vigile_binding.dart';
 import 'package:ges_absence/app/modules/etudiant/views/absence_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/cours_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/home_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/justification_view.dart';
-import 'package:ges_absence/app/modules/etudiant/views/login_view.dart';
+import 'package:ges_absence/app/modules/auth/views/login_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/retards_view.dart';
+import 'package:ges_absence/app/modules/vigile/views/home_view.dart';
 import 'package:ges_absence/app/routes/app_routes.dart';
 import 'package:ges_absence/theme/colors.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get/get_navigation/src/routes/get_route.dart';
 
 void main() {
   runApp(MyApp());
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch().copyWith(
           secondary: AppColors.secondaryColor,
         ),
-        fontFamily: 'Roboto',
+        // fontFamily: 'Roboto',
       ),
       initialBinding: GlobalBinding(),
       initialRoute: AppRoutes.LOGIN,
@@ -63,6 +62,11 @@ class MyApp extends StatelessWidget {
           name: AppRoutes.RETARDS,
           page: () => RetardsView(),
           binding: EtudiantBinding(),
+        ),
+        GetPage(
+          name: AppRoutes.Vigile_HOME,
+          page: () => VigileHomeView(),
+          binding: VigileBinding(), 
         ),
       ],
       debugShowCheckedModeBanner: false,

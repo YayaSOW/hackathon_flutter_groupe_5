@@ -1,23 +1,29 @@
-import 'package:ges_absence/app/data/models/etudiant.dart';
-import 'package:ges_absence/app/routes/app_routes.dart';
+import 'package:ges_absence/app/data/models/vigile.dart';
 import 'package:get/get.dart';
+import 'package:ges_absence/app/data/models/etudiant.dart';
+import 'package:ges_absence/app/data/models/user.dart'; // Contient Vigile
+import 'package:ges_absence/app/routes/app_routes.dart';
 import '../../../data/services/api_service.dart';
 
 class AuthController extends GetxController {
   final ApiService apiService = Get.find();
   final etudiant = Rxn<Etudiant>();
+  final vigile = Rxn<Vigile>();
   final isLoading = false.obs;
 
   Future<void> login(String login, String password) async {
     try {
       isLoading(true);
-      final result = await apiService.loginEtudiant(login, password);
-      // print('Résultat de la connexion: $result');
+      final result = await apiService.login(login, password);
+
       if (result != null) {
-      // if (true) {
-        etudiant.value = result;
-        //  print('Étudiant connecté: ${etudiant.value?.toJson()}');
-        Get.offNamed(AppRoutes.Etudiant_HOME);
+        if (result['type'] == 'etudiant') {
+          etudiant.value = result['user'] as Etudiant;
+          Get.offNamed(AppRoutes.Etudiant_HOME);
+        } else if (result['type'] == 'vigile') {
+          vigile.value = result['user'] as Vigile;
+          Get.offNamed(AppRoutes.Vigile_HOME); // Assumes une route pour les vigiles
+        }
       } else {
         Get.snackbar('Erreur', 'Identifiants incorrects');
       }
@@ -30,6 +36,7 @@ class AuthController extends GetxController {
 
   void logout() {
     etudiant.value = null;
+    vigile.value = null;
     Get.offAllNamed(AppRoutes.LOGIN);
   }
 }

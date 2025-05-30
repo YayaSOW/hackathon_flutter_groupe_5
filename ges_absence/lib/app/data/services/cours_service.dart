@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 class CoursService extends GetxService {
   // final String baseUrl = "http://10.0.2.2:3000";
+  // final String baseUrl = 'http://172.16.10.163:3000';
   final String baseUrl = "http://localhost:3000";
 
   Future<List<Cours>> fetchCours() async {

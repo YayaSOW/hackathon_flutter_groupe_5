@@ -1,4 +1,4 @@
-  import 'package:ges_absence/app/modules/etudiant/controllers/auth_controller.dart';
+  import 'package:ges_absence/app/modules/auth/controllers/auth_controller.dart';
 import 'package:get/get.dart';
 import '../../../data/models/presence.dart';
 import '../../../data/services/api_service.dart';

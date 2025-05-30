@@ -5,7 +5,7 @@ import 'package:ges_absence/theme/colors.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../controllers/home_controller.dart';
-import '../controllers/auth_controller.dart';
+import '../../auth/controllers/auth_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   @override

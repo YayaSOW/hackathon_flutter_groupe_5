@@ -50,7 +50,7 @@ class LoginView extends GetView<AuthController> {
                     TextFormField(
                       controller: _loginController,
                       decoration: InputDecoration(
-                        labelText: 'Enter votre identifiant',
+                        labelText: 'Entrez votre identifiant',
                         prefixIcon: Icon(Icons.person, color: AppColors.primaryColor),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -68,7 +68,7 @@ class LoginView extends GetView<AuthController> {
                       controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        labelText: 'Enter votre mot de passe',
+                        labelText: 'Entrez votre mot de passe',
                         prefixIcon: Icon(Icons.lock, color: AppColors.primaryColor),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -93,7 +93,7 @@ class LoginView extends GetView<AuthController> {
                                 );
                               }
                             },
-                            child: Text('Connection', style: TextStyle(fontSize: 18)),
+                            child: Text('Connexion', style: TextStyle(fontSize: 18)),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.secondaryColor,
                               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -111,5 +111,12 @@ class LoginView extends GetView<AuthController> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _loginController.dispose();
+    _passwordController.dispose();
+    // super.dispose(); // Pas nécessaire avec GetView
   }
 }

@@ -2,7 +2,7 @@ import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/data/models/presence.dart';
 import 'package:ges_absence/app/data/services/api_service.dart';
-import 'package:ges_absence/app/modules/etudiant/controllers/auth_controller.dart';
+import 'package:ges_absence/app/modules/auth/controllers/auth_controller.dart';
 
 class AbsencesController extends GetxController {
   var absences = <Presence>[].obs; // Liste des présences de type ABSENT
