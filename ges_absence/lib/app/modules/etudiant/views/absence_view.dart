@@ -4,7 +4,6 @@ import 'package:ges_absence/app/modules/etudiant/views/justification_view.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/theme/colors.dart';
-// import 'justification_view.dart'; // Nouvelle vue pour la justification
 
 class AbsencesView extends GetView<AbsencesController> {
   const AbsencesView({super.key});

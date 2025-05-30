@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'package:ges_absence/app/data/models/vigile.dart';
+import 'package:ges_absence/base_service.dart';
+import 'package:ges_absence/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import '../models/etudiant.dart';
 import '../models/presence.dart';
-import '../models/user.dart'; // Contient Vigile
 
-class ApiService {
-  final String baseUrl;
+class ApiService with BaseService{
+  // final String baseUrl;
 
    // ApiService({this.baseUrl = 'http://10.0.2.2:3000'}); 
   // ApiService({this.baseUrl = 'http://172.16.10.163:3000'});
-  ApiService({this.baseUrl = 'http://localhost:3000'});
+  // ApiService({this.baseUrl = 'http://localhost:3000'});
 
-  // Méthode pour connecter un étudiant
+  // ApiService() : baseUrl = Env.baseUrl;
+
   Future<Etudiant?> loginEtudiant(String login, String password) async {
     try {
       final uri = Uri.parse('$baseUrl/etudiants?login=$login&password=$password');
@@ -31,7 +33,6 @@ class ApiService {
     }
   }
 
-  // Méthode pour connecter un vigile
   Future<Vigile?> loginVigile(String login, String password) async {
     try {
       final uri = Uri.parse('$baseUrl/vigiles?login=$login&password=$password');
@@ -49,22 +50,18 @@ class ApiService {
     }
   }
 
-  // Méthode centralisée pour connecter un utilisateur (étudiant ou vigile)
   Future<Map<String, dynamic>?> login(String login, String password) async {
     try {
-      // Essayer de connecter un étudiant
       final etudiant = await loginEtudiant(login, password);
       if (etudiant != null) {
         return {'type': 'etudiant', 'user': etudiant};
       }
 
-      // Si pas étudiant, essayer de connecter un vigile
       final vigile = await loginVigile(login, password);
       if (vigile != null) {
         return {'type': 'vigile', 'user': vigile};
       }
 
-      // Aucun utilisateur trouvé
       return null;
     } catch (e) {
       throw Exception('Erreur lors de la connexion: $e');

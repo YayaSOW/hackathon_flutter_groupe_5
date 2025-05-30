@@ -5,7 +5,6 @@ import 'package:ges_absence/app/data/models/presence.dart';
 import 'package:ges_absence/theme/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ges_absence/app/modules/etudiant/controllers/justification_controller.dart';
-import 'package:ges_absence/app/routes/app_routes.dart';
 
 class JustificationView extends StatelessWidget {
   final Presence absence;
@@ -32,7 +31,7 @@ class JustificationView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFED9C37), // orange
+                color: const Color(0xFFED9C37), 
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(

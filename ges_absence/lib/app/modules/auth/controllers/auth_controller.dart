@@ -22,7 +22,7 @@ class AuthController extends GetxController {
           Get.offNamed(AppRoutes.Etudiant_HOME);
         } else if (result['type'] == 'vigile') {
           vigile.value = result['user'] as Vigile;
-          Get.offNamed(AppRoutes.Vigile_HOME); // Assumes une route pour les vigiles
+          Get.offNamed(AppRoutes.Vigile_HOME); 
         }
       } else {
         Get.snackbar('Erreur', 'Identifiants incorrects');

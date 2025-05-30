@@ -5,7 +5,7 @@ import 'package:ges_absence/app/data/services/api_service.dart';
 import 'package:ges_absence/app/modules/auth/controllers/auth_controller.dart';
 
 class AbsencesController extends GetxController {
-  var absences = <Presence>[].obs; // Liste des présences de type ABSENT
+  var absences = <Presence>[].obs;
   final ApiService apiService = Get.find();
 
   @override
@@ -18,10 +18,10 @@ class AbsencesController extends GetxController {
     try {
       final etudiant = Get.find<AuthController>().etudiant.value;
       if (etudiant != null) {
-        print('Chargement des absences pour l\'étudiant ID: ${etudiant.id}'); // Débogage
+        // print('Chargement des absences pour l\'étudiant ID: ${etudiant.id}');
         final allPresences = await apiService.getPresencesForEtudiant(etudiant.id!.toString());
         absences.assignAll(allPresences.where((presence) => presence.typePresence == TypePresence.ABSENT).toList());
-        print('Absences chargées: ${absences.length}'); // Débogage
+        // print('Absences chargées: ${absences.length}'); 
       } else {
         print('Aucun étudiant connecté');
       }

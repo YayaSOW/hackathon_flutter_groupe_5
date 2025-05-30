@@ -12,7 +12,7 @@ class LoginView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3C1E17), // fond marron foncé
+      backgroundColor: const Color(0xFF3C1E17), 
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -20,7 +20,6 @@ class LoginView extends GetView<AuthController> {
             key: _formKey,
             child: Column(
               children: [
-                // Logo ISM
                 Image.asset(
                   'assets/images/ism_logo.png',
                   height: 120,
@@ -37,7 +36,6 @@ class LoginView extends GetView<AuthController> {
                 ),
                 const SizedBox(height: 32),
 
-                // Login Field
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Login", style: TextStyle(color: Colors.white)),
@@ -55,7 +53,6 @@ class LoginView extends GetView<AuthController> {
                 ),
                 const SizedBox(height: 24),
 
-                // Password Field
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text("Mot de passe", style: TextStyle(color: Colors.white)),
@@ -83,7 +80,6 @@ class LoginView extends GetView<AuthController> {
                     )),
                 const SizedBox(height: 32),
 
-                // Submit Button
                 Obx(() => controller.isLoading.value
                     ? CircularProgressIndicator(color: Colors.orange)
                     : SizedBox(
