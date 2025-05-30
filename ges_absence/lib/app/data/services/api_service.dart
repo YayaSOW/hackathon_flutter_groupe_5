@@ -34,18 +34,22 @@ class ApiService {
     }
   }
 
-  Future<List<Presence>> getPresences(String etudiantId) async {
+  Future<List<Presence>> getPresencesForEtudiant(String etudiantId) async {
     try {
-      final uri = Uri.parse('$baseUrl/presences?etudiant.id=$etudiantId');
+      // Utilise _expand pour inclure les relations etudiant et cours
+      final uri = Uri.parse('$baseUrl/presences?etudiant=$etudiantId&_expand=etudiant&_expand=cours');
+      print('Requête envoyée à: $uri'); // Débogage
       final response = await http.get(uri);
-
+      print('Réponse brute: ${response.body}'); // Débogage
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => Presence.fromJson(json)).toList();
+      } else {
+        print('Erreur HTTP: ${response.statusCode} - ${response.body}');
+        return [];
       }
-      return [];
     } catch (e) {
-      print('Erreur récupération présences: ${e.toString()}');
+      print('Erreur lors de la récupération des présences: $e');
       return [];
     }
   }

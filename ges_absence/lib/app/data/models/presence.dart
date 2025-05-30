@@ -4,7 +4,7 @@ import 'package:ges_absence/app/data/models/etudiant.dart';
 import 'package:ges_absence/app/data/models/user.dart';
 
 class Presence {
-  final String? id;
+  final int? id;
   final DateTime date;
   final TypePresence typePresence;
   final Etudiant etudiant;
@@ -20,12 +20,23 @@ class Presence {
     this.vigile,
   });
 
-  factory Presence.fromJson(Map<String, dynamic> json) => Presence(
-        id: json['id'],
-        date: DateTime.parse(json['date']),
-        typePresence: TypePresence.values[json['typePresence']],
-        etudiant: Etudiant.fromJson(json['etudiant']),
-        cours: Cours.fromJson(json['cours']),
-        vigile: json['vigile'] != null ? User.fromJson(json['vigile']) : null,
-      );
+  factory Presence.fromJson(Map<String, dynamic> json) {
+    return Presence(
+      id: json['id'] != null ? int.parse(json['id'].toString()) : null,
+      date: DateTime.parse(json['date'] as String),
+      typePresence: TypePresence.values[json['typePresence'] as int],
+      etudiant: Etudiant.fromJson(json['etudiant'] as Map<String, dynamic>),
+      cours: Cours.fromJson(json['cours'] as Map<String, dynamic>),
+      vigile: json['vigile'] != null ? User.fromJson(json['vigile'] as Map<String, dynamic>) : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'date': date.toIso8601String(),
+    'typePresence': typePresence.index,
+    'etudiant': etudiant.toJson(),
+    'cours': cours.toJson(),
+    'vigile': vigile?.toJson(),
+  };
 }

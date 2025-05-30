@@ -1,4 +1,3 @@
-
 import 'package:ges_absence/app/data/models/user.dart';
 
 class Etudiant extends User {
@@ -6,7 +5,7 @@ class Etudiant extends User {
   final bool status;
 
   Etudiant({
-    required String super.id,
+    required super.id,
     required super.nom,
     required super.prenom,
     required super.login,
@@ -17,13 +16,14 @@ class Etudiant extends User {
   });
 
   factory Etudiant.fromJson(Map<String, dynamic> json) => Etudiant(
-        id: json['id'],
-        nom: json['nom'],
-        prenom: json['prenom'],
-        login: json['login'],
-        telephone: json['telephone'],
-        password: json['password'],
-        matricule: json['matricule'],
-        status: json['status'],
-      );
+    // id: json['id'],
+    id: int.parse(json['id'].toString()),
+    nom: json['nom'],
+    prenom: json['prenom'],
+    login: json['login'],
+    telephone: json['telephone'],
+    password: json['password'],
+    matricule: json['matricule'],
+    status: json['status'],
+  );
 }

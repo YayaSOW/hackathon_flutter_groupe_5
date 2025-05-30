@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ges_absence/app/bindings/global_binding.dart';
 import 'package:ges_absence/app/bindings/etudiant_binding.dart';
+import 'package:ges_absence/app/modules/etudiant/views/absence_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/cours_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/home_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/login_view.dart';
@@ -40,8 +41,13 @@ class MyApp extends StatelessWidget {
           page: () => HomeView(),
           // binding: VigileBinding(),
         ),
-        GetPage(name: AppRoutes.COURS, 
-        page: () => CoursView(),
+        GetPage(
+          name: AppRoutes.COURS,
+          page: () => CoursView(),
+          binding: EtudiantBinding(),
+        ),
+        GetPage(name: AppRoutes.ABSENCES, 
+        page: () => AbsencesView(),
         binding: EtudiantBinding(),
         ),
       ],

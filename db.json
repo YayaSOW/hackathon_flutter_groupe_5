@@ -22,39 +22,79 @@
         }
     ],
     "cours": [
-    {
-      "id": "1",
-      "nomCours": "Angular",
-      "date": "2025-05-29T09:00:00Z",
-      "duree": 4,
-      "heureDebut": "13:00",
-  "heureFin": "17:00"
-    },
-    {
-      "id": "2",
-      "nomCours": "Flutter",
-      "date": "2025-05-28T14:00:00Z",
-      "duree": 4,
-        "heureDebut": "14:00",
-        "heureFin": "18:00"
-    },
-    {
-      "id": "3",
-      "nomCours": "Spring Boot",
-      "date": "2025-06-01T10:00:00Z",
-      "duree": 3,
-        "heureDebut": "10:00",
-        "heureFin": "13:00"
-    }
-  ],
+        {
+            "id": "1",
+            "nomCours": "Angular",
+            "date": "2025-05-29T09:00:00Z",
+            "duree": 4,
+            "heureDebut": "13:00",
+            "heureFin": "17:00"
+        },
+        {
+            "id": "2",
+            "nomCours": "Flutter",
+            "date": "2025-05-28T14:00:00Z",
+            "duree": 4,
+            "heureDebut": "14:00",
+            "heureFin": "18:00"
+        },
+        {
+            "id": "3",
+            "nomCours": "Spring Boot",
+            "date": "2025-06-01T10:00:00Z",
+            "duree": 3,
+            "heureDebut": "10:00",
+            "heureFin": "13:00"
+        }
+    ],
     "presences": [
         {
             "id": "1",
-            "date": "2023-10-20T08:00:00Z",
-            "typePresence": "PRESENT",
+            "date": "2025-05-20T00:00:00Z",
+            "typePresence": 0,
             "etudiant": {
-                "id": "1"
-            }
+                "id": "1",
+                "nom": "Diop",
+                "prenom": "Ousmane",
+                "login": "ousmane",
+                "telephone": "123456",
+                "password": "pass",
+                "matricule": "M123",
+                "status": true
+            },
+            "cours": {
+                "id": "1",
+                "nomCours": "Angular",
+                "date": "2025-05-29T09:00:00Z",
+                "duree": 4,
+                "heureDebut": "13:00",
+                "heureFin": "17:00"
+            },
+            "vigile": null
+        },
+        {
+            "id": "2",
+            "date": "2025-05-22T00:00:00Z",
+            "typePresence": 0,
+            "etudiant": {
+                "id": "1",
+                "nom": "Diop",
+                "prenom": "Ousmane",
+                "login": "ousmane",
+                "telephone": "123456",
+                "password": "pass",
+                "matricule": "M123",
+                "status": true
+            },
+            "cours": {
+                "id": "2",
+                "nomCours": "Flutter",
+                "date": "2025-05-28T14:00:00Z",
+                "duree": 4,
+                "heureDebut": "14:00",
+                "heureFin": "18:00"
+            },
+            "vigile": null
         }
     ]
 }

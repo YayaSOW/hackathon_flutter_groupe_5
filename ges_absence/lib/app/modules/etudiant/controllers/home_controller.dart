@@ -19,7 +19,7 @@ class HomeController extends GetxController {
       isLoading(true);
       final etudiantId = Get.find<AuthController>().etudiant.value?.id;
       if (etudiantId != null) {
-        final result = await apiService.getPresences(etudiantId);
+        final result = await apiService.getPresencesForEtudiant(etudiantId.toString());
         presences.assignAll(result);
       }
     } catch (e) {

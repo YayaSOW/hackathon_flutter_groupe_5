@@ -1,7 +1,7 @@
 import 'package:ges_absence/app/data/models/presence.dart';
 
 class Justificatif {
-  final String? id;
+  final int? id;
   final String motif;
   final bool validation;
   final Presence presence;
@@ -14,7 +14,8 @@ class Justificatif {
   });
 
   factory Justificatif.fromJson(Map<String, dynamic> json) => Justificatif(
-        id: json['id'],
+        // id: json['id'],
+        id: int.parse(json['id'].toString()),
         motif: json['motif'],
         validation: json['validation'],
         presence: Presence.fromJson(json['presence']),
