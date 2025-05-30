@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import '../models/etudiant.dart';
 import '../models/presence.dart';
 
-class ApiService with BaseService{
+class ApiService extends GetxService with BaseService{
   // final String baseUrl;
 
    // ApiService({this.baseUrl = 'http://10.0.2.2:3000'}); 
@@ -71,9 +71,9 @@ class ApiService with BaseService{
   Future<List<Presence>> getPresencesForEtudiant(String etudiantId) async {
     try {
       final uri = Uri.parse('$baseUrl/presences?etudiant=$etudiantId&_expand=etudiant&_expand=cours');
-      print('Requête envoyée à: $uri');
+      // print('Requête envoyée à: $uri');
       final response = await http.get(uri);
-      print('Réponse brute: ${response.body}');
+      // print('Réponse brute: ${response.body}');
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         return data.map((json) => Presence.fromJson(json)).toList();
