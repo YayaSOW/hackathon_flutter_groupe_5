@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:ges_absence/base_service.dart';
+import 'package:ges_absence/app/utils/base_service.dart';
 import 'package:ges_absence/env.dart';
 import 'package:get/get.dart';
 import '../models/cours.dart';

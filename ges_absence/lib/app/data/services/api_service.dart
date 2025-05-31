@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/app/data/models/vigile.dart';
-import 'package:ges_absence/base_service.dart';
+import 'package:ges_absence/app/utils/base_service.dart';
 import 'package:ges_absence/env.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';

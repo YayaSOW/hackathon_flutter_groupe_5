@@ -12,7 +12,7 @@ class Env {
       final isEmulator = !Platform.environment.containsKey('ANDROID_STORAGE');
       return isEmulator
           ? 'http://10.0.2.2:3000'       // Android Emulator
-          : 'http://172.16.10.163:3000'; // Android Physique
+          : 'http://192.168.43.54:3000'; // Android Physique
     } else if (Platform.isIOS) {
       // iOS Simulator ou physique — souvent localhost marche
       return 'http://localhost:3000';
