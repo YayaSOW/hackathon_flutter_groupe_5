@@ -1,4 +1,7 @@
 import 'package:ges_absence/app/modules/etudiant/views/absence_view.dart';
+import 'package:ges_absence/app/modules/vigile/views/vigile_etudiant_view.dart';
+import 'package:ges_absence/app/modules/vigile/views/vigile_home_view.dart';
+import 'package:ges_absence/app/modules/vigile/views/vigile_scan_view.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/bindings/etudiant_binding.dart';
 import 'package:ges_absence/app/bindings/vigile_binding.dart';
@@ -7,7 +10,6 @@ import 'package:ges_absence/app/modules/etudiant/views/cours_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/home_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/justification_view.dart';
 import 'package:ges_absence/app/modules/etudiant/views/retards_view.dart';
-import 'package:ges_absence/app/modules/vigile/views/home_view.dart';
 import 'package:ges_absence/app/routes/app_routes.dart';
 
 class AppPages {
@@ -49,6 +51,16 @@ class AppPages {
       page: () => VigileHomeView(),
       binding: VigileBinding(),
     ),
+    GetPage(
+          name: AppRoutes.VIGILE_SCAN,
+          page: () => VigileScanView(),
+          binding: VigileBinding(),
+        ),
+        GetPage(
+          name: AppRoutes.VIGILE_ETUDIANT,
+          page: () => VigileEtudiantView(),
+          binding: VigileBinding(),
+        ),
   ];
 
 }

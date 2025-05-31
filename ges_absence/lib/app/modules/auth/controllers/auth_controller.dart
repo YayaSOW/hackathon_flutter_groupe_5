@@ -1,7 +1,6 @@
 import 'package:ges_absence/app/data/models/vigile.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/data/models/etudiant.dart';
-import 'package:ges_absence/app/data/models/user.dart'; // Contient Vigile
 import 'package:ges_absence/app/routes/app_routes.dart';
 import '../../../data/services/api_service.dart';
 
@@ -15,7 +14,6 @@ class AuthController extends GetxController {
     try {
       isLoading(true);
       final result = await apiService.login(login, password);
-
       if (result != null) {
         if (result['type'] == 'etudiant') {
           etudiant.value = result['user'] as Etudiant;

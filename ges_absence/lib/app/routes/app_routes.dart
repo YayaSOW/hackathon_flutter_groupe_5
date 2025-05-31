@@ -7,4 +7,6 @@ abstract class AppRoutes {
   static const ABSENCES = '/absences';
   static const RETARDS = '/retards';
   static const JUSTIFICATION = '/justification';
+    static const VIGILE_ETUDIANT = '/vigile-etudiant';
+    static const VIGILE_SCAN = '/vigile-scan';
 }

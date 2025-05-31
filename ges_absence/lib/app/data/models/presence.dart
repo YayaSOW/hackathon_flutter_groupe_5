@@ -4,7 +4,7 @@ import 'package:ges_absence/app/data/models/etudiant.dart';
 import 'package:ges_absence/app/data/models/user.dart';
 
 class Presence {
-  final int? id;
+  final String? id;
   final DateTime date;
   final TypePresence typePresence;
   final Etudiant etudiant;
@@ -22,12 +22,15 @@ class Presence {
 
   factory Presence.fromJson(Map<String, dynamic> json) {
     return Presence(
-      id: json['id'] != null ? int.parse(json['id'].toString()) : null,
+      id: json['id']?.toString(),
       date: DateTime.parse(json['date'] as String),
       typePresence: TypePresence.values[json['typePresence'] as int],
       etudiant: Etudiant.fromJson(json['etudiant'] as Map<String, dynamic>),
       cours: Cours.fromJson(json['cours'] as Map<String, dynamic>),
-      vigile: json['vigile'] != null ? User.fromJson(json['vigile'] as Map<String, dynamic>) : null,
+      vigile:
+          json['vigile'] != null
+              ? User.fromJson(json['vigile'] as Map<String, dynamic>)
+              : null,
     );
   }
 
