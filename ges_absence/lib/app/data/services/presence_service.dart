@@ -38,26 +38,28 @@ class PresenceService extends GetxService with BaseService {
 
   // Méthode mock pour json-server
   Future<List<Presence>> getAbsencesByEtudiantIdMock(String etudiantId) async {
-    try {
-      final uri = Uri.parse('$baseUrl/presences');
-      final response = await http.get(
-        uri,
-        headers: {'Accept': 'application/json'},
-      );
+  try {
+    final uri = Uri.parse('$baseUrl/presences');
+    final response = await http.get(uri, headers: {'Accept': 'application/json'});
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data
-            .map((json) => Presence.fromJson(json))
-            .where((presence) =>
-                presence.etudiant?.id == etudiantId &&
-                presence.typePresence == TypePresence.ABSENT)
-            .toList();
-      }
-      return [];
-    } catch (e) {
-      print('Erreur lors de la récupération des absences mock: $e');
-      return [];
+    print('Requête envoyée à: $uri');
+    print('Réponse: ${response.statusCode} - ${response.body}');
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      final presences = data
+          .map((json) => Presence.fromJson(json))
+          .where((presence) =>
+              presence.etudiant?.id == etudiantId &&
+              presence.typePresence == TypePresence.ABSENT)
+          .toList();
+      print('Absences filtrées pour $etudiantId: $presences');
+      return presences;
     }
+    return [];
+  } catch (e) {
+    print('Erreur lors de la récupération des absences mock: $e');
+    return [];
   }
+}
 }

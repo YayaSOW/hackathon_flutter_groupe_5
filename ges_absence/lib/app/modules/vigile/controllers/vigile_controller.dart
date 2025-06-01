@@ -13,25 +13,30 @@ class VigileController extends GetxController {
   final courses = <Cours>[].obs;
 
   static const String ROUTE_HOME = '/vigile/home';
-  static const String ROUTE_ETUDIANT = '/vigile/etudiant';
+  static const String ROUTE_ETUDIANT = '/vigile-etudiant';
 
   void toggleScanMode() {
     isScanning.value = !isScanning.value;
   }
 
   Future<void> searchByMatricule(String matricule) async {
-    try {
-      final etudiant = await apiService.getEtudiantByMatriculeMock(matricule);
-      if (etudiant != null) {
-        scannedEtudiant.value = etudiant;
-        Get.toNamed(ROUTE_ETUDIANT);
-      } else {
-        Get.snackbar('Erreur', 'Étudiant non trouvé');
-      }
-    } catch (e) {
-      Get.snackbar('Erreur', 'Échec de la recherche: $e');
+  try {
+    print('Recherche par matricule: $matricule');
+    final etudiant = await apiService.getEtudiantByMatriculeMock(matricule);
+    print('Résultat de la recherche: $etudiant');
+    if (etudiant != null) {
+      scannedEtudiant.value = etudiant;
+      print('Étudiant trouvé, navigation vers $ROUTE_ETUDIANT');
+      Get.toNamed(ROUTE_ETUDIANT);
+    } else {
+      print('Aucun étudiant trouvé pour le matricule: $matricule');
+      Get.snackbar('Erreur', 'Étudiant non trouvé');
     }
+  } catch (e) {
+    print('Erreur dans searchByMatricule: $e');
+    Get.snackbar('Erreur', 'Échec de la recherche: $e');
   }
+}
 
   Future<void> markPresence({
     required String etudiantId,

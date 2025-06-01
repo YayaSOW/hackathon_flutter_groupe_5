@@ -20,10 +20,7 @@ class ApiService extends GetxService with BaseService {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode({
-          'login': login,
-          'password': password,
-        }),
+        body: jsonEncode({'login': login, 'password': password}),
       );
 
       print('Requête envoyée à: $uri');
@@ -37,15 +34,9 @@ class ApiService extends GetxService with BaseService {
           final type = data['type'];
 
           if (type == 'EtudiantOneResponse') {
-            return {
-              'type': 'etudiant',
-              'user': Etudiant.fromJson(user),
-            };
+            return {'type': 'etudiant', 'user': Etudiant.fromJson(user)};
           } else if (type == 'UserOneResponse') {
-            return {
-              'type': 'vigile',
-              'user': Vigile.fromJson(user),
-            };
+            return {'type': 'vigile', 'user': Vigile.fromJson(user)};
           }
         }
       }
@@ -57,55 +48,59 @@ class ApiService extends GetxService with BaseService {
   }
 
   // Version mock pour json-server
-Future<Map<String, dynamic>?> loginMock(String login, String password) async {
-  try {
-    print('Appel loginMock avec login: $login, password: $password');
-    // Essayer d'abord avec les étudiants
-    final uriEtudiants = Uri.parse('$baseUrl/etudiants?login=$login');
-    var response = await http.get(uriEtudiants, headers: {'Accept': 'application/json'});
-    print('Réponse brute de $uriEtudiants: ${response.statusCode} - ${response.body}');
+  Future<Map<String, dynamic>?> loginMock(String login, String password) async {
+    try {
+      print('Appel loginMock avec login: $login, password: $password');
+      // Essayer d'abord avec les étudiants
+      final uriEtudiants = Uri.parse('$baseUrl/etudiants?login=$login');
+      var response = await http.get(
+        uriEtudiants,
+        headers: {'Accept': 'application/json'},
+      );
+      print(
+        'Réponse brute de $uriEtudiants: ${response.statusCode} - ${response.body}',
+      );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      for (var item in data) {
-        print('Vérification étudiant: $item');
-        if (item['login'] == login && item['password'] == password) {
-          return {
-            'type': 'etudiant',
-            'user': Etudiant.fromJson(item),
-          };
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        for (var item in data) {
+          print('Vérification étudiant: $item');
+          if (item['login'] == login && item['password'] == password) {
+            return {'type': 'etudiant', 'user': Etudiant.fromJson(item)};
+          }
         }
       }
-    }
 
-    // Si pas trouvé, essayer avec les vigiles
-    final uriVigiles = Uri.parse('$baseUrl/vigiles?login=$login');
-    response = await http.get(uriVigiles, headers: {'Accept': 'application/json'});
-    print('Réponse brute de $uriVigiles: ${response.statusCode} - ${response.body}');
+      // Si pas trouvé, essayer avec les vigiles
+      final uriVigiles = Uri.parse('$baseUrl/vigiles?login=$login');
+      response = await http.get(
+        uriVigiles,
+        headers: {'Accept': 'application/json'},
+      );
+      print(
+        'Réponse brute de $uriVigiles: ${response.statusCode} - ${response.body}',
+      );
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      for (var item in data) {
-        print('Vérification vigile: $item');
-        if (item['login'] == login && item['password'] == password) {
-          return {
-            'type': 'vigile',
-            'user': Vigile.fromJson(item),
-          };
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        for (var item in data) {
+          print('Vérification vigile: $item');
+          if (item['login'] == login && item['password'] == password) {
+            return {'type': 'vigile', 'user': Vigile.fromJson(item)};
+          }
         }
       }
+      return null;
+    } catch (e) {
+      print('Erreur dans loginMock: $e');
+      return null;
     }
-    return null;
-  } catch (e) {
-    print('Erreur dans loginMock: $e');
-    return null;
   }
-}
 
   // Récupérer les présences d'un étudiant
-  Future<List<Presence>> getPresencesForEtudiant(String etudiantId) async {
+  Future<List<Presence>> getPresencesForEtudiantMock(String etudiantId) async {
     try {
-      final uri = Uri.parse('$baseUrl/api/v1/etudiants/$etudiantId/presences');
+      final uri = Uri.parse('$baseUrl/presences');
       final response = await http.get(
         uri,
         headers: {'Accept': 'application/json'},
@@ -115,72 +110,11 @@ Future<Map<String, dynamic>?> loginMock(String login, String password) async {
       print('Réponse: ${response.statusCode} - ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-
-        if (data['status'] == 200 && data['results'] != null) {
-          final presencesData = data['results']['presences'] as List;
-          return presencesData.map((json) {
-            return Presence(
-              id: null, // L'ID n'est pas inclus dans PresenceAllResponse
-              date: DateTime.parse(json['date'] as String),
-              typePresence: TypePresence.values.firstWhere(
-                (e) => e.name == json['typePresence'],
-                orElse: () => TypePresence.ABSENT,
-              ),
-              cours: Cours(
-                id: null,
-                nomCours: json['cours'] as String,
-                date: DateTime.now(), // Non fourni dans DTO, valeur par défaut
-                heureDebut: TimeOfDay(hour: 0, minute: 0), // Non fourni
-                heureFin: TimeOfDay(hour: 0, minute: 0), // Non fourni
-              ),
-              etudiant: null,
-              admin: null,
-              justificatifs: [],
-            );
-          }).toList();
-        }
-      }
-      return [];
-    } catch (e) {
-      print('Erreur lors de la récupération des présences: $e');
-      return [];
-    }
-  }
-
-  // Version mock pour json-server
-  Future<List<Presence>> getPresencesForEtudiantMock(String etudiantId) async {
-    try {
-      final uri = Uri.parse('$baseUrl/etudiants/:id/presences');
-      final response = await http.get(uri);
-
-      if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        for (var item in data) {
-          if (item['status'] == 200 && item['results']['etudiant']['id'] == etudiantId) {
-            final presencesData = item['results']['presences'] as List;
-            return presencesData.map((json) {
-              return Presence(
-                id: null,
-                date: DateTime.parse(json['date'] as String),
-                typePresence: TypePresence.values.firstWhere(
-                  (e) => e.name == json['typePresence'],
-                  orElse: () => TypePresence.ABSENT,
-                ),
-                cours: Cours(
-                  id: null,
-                  nomCours: json['cours'] as String,
-                  date: DateTime.now(),
-                  heureDebut: TimeOfDay(hour: 0, minute: 0),
-                  heureFin: TimeOfDay(hour: 0, minute: 0),
-                ),
-                etudiant: null,
-                admin: null,
-                justificatifs: [],
-              );
-            }).toList();
-          }
-        }
+        return data
+            .map((json) => Presence.fromJson(json))
+            .where((presence) => presence.etudiant?.id == etudiantId)
+            .toList();
       }
       return [];
     } catch (e) {
@@ -242,10 +176,7 @@ Future<Map<String, dynamic>?> loginMock(String login, String password) async {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        body: jsonEncode({
-          'motif': motif,
-          'presenceId': presenceId,
-        }),
+        body: jsonEncode({'motif': motif, 'presenceId': presenceId}),
       );
 
       print('Justification envoyée: ${response.statusCode}');
@@ -314,7 +245,10 @@ Future<Map<String, dynamic>?> loginMock(String login, String password) async {
         uri,
         headers: {'Accept': 'application/json'},
       );
-
+      print('dans apiservice:Requête envoyée à: $uri');
+      print(
+        'dans apiservice:Réponse: ${response.statusCode} - ${response.body}',
+      );
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         if (data.isNotEmpty) {

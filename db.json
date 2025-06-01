@@ -142,6 +142,12 @@
       "motif": "vvv",
       "presenceId": "674d5e8f123456789abcdef5",
       "validation": false
+    },
+    {
+      "id": "274a",
+      "motif": "ccccccccccccccc",
+      "presenceId": "674d5e8f123456789abcdef5",
+      "validation": false
     }
   ],
   "auth/login": [

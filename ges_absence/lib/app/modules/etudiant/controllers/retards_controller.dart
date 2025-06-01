@@ -1,4 +1,3 @@
-
 // RetardsController.dart
 import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/app/data/models/presence.dart';
@@ -21,9 +20,14 @@ class RetardsController extends GetxController {
     try {
       final etudiant = Get.find<AuthController>().etudiant.value;
       if (etudiant != null) {
-        final allPresences = await apiService.getPresencesForEtudiantMock(etudiant.id!); // Utiliser la version mock
+        final allPresences = await apiService.getPresencesForEtudiantMock(
+          etudiant.id!,
+        );
         retards.assignAll(
-            allPresences.where((presence) => presence.typePresence == TypePresence.RETARD).toList());
+          allPresences
+              .where((presence) => presence.typePresence == TypePresence.RETARD)
+              .toList(),
+        );
       } else {
         print('Aucun étudiant connecté');
       }
