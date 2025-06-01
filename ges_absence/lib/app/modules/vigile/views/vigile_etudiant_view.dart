@@ -1,105 +1,179 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ges_absence/app/data/models/etudiant.dart';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
-import 'package:ges_absence/app/routes/app_routes.dart'; // Import routes
-import '../controllers/vigile_controller.dart';
+import 'package:ges_absence/app/modules/vigile/controllers/vigile_controller.dart';
 import 'package:ges_absence/theme/app_theme.dart';
-import 'package:ges_absence/theme/colors.dart';
 
-class VigileEtudiantView extends GetView<VigileHomeController> {
+class VigileEtudiantView extends GetView<VigileController> {
+  const VigileEtudiantView({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final etudiant = controller.scannedEtudiant.value;
-
-    if (etudiant == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Vérification Étudiant', style: AppTheme.appBarStyle),
-          backgroundColor: const Color(0xFF8B4513),
-        ),
-        body: const Center(child: Text('Aucun étudiant sélectionné')),
-      );
-    }
+    final etudiant = controller.scannedEtudiant.value!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Vérification Étudiant', style: AppTheme.appBarStyle),
-        backgroundColor: const Color(0xFF8B4513),
+        title: const Text('Détails de l\'étudiant'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey,
-              child: Icon(Icons.person, color: Colors.white, size: 50),
+            // Information de l'étudiant
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildInfoRow('Matricule', etudiant.matricule),
+                    const SizedBox(height: 8),
+                    _buildInfoRow('Nom', etudiant.nom),
+                    const SizedBox(height: 8),
+                    _buildInfoRow('Prénom', etudiant.prenom),
+                    const SizedBox(height: 8),
+                    _buildInfoRow('Classe', etudiant.classe?.nomClasse ?? 'Non spécifié'),
+                  ],
+                ),
+              ),
             ),
-            const SizedBox(height: 20),
-            Text(
-              '${etudiant.prenom ?? 'Inconnu'} ${etudiant.nom ?? 'Inconnu'}',
-              style: AppTheme.titleStyle,
+            const SizedBox(height: 16),
+            // Statut de l'étudiant
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      etudiant.status ? Icons.check_circle : Icons.warning,
+                      color: etudiant.status ? Colors.green : Colors.orange,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Statut: ${etudiant.status ? "À jour" : "Pas à jour"}',
+                      style: TextStyle(
+                        color: etudiant.status ? Colors.green.shade700 : Colors.orange.shade700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            Text(
-              'Matricule: ${etudiant.matricule ?? 'Non défini'}',
-              style: AppTheme.subtitleStyle,
-            ),
-            Text(
-              'Statut: ${etudiant.status == true ? "A jour" : " Pas à jour"}',
-              style: AppTheme.subtitleStyle,
-            ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () async {
-                          await controller.markPresence(
-                            etudiant.id!.toString(),
-                            TypePresence.PRESENT.name,
-                          );
-                          Get.offNamed(AppRoutes.Vigile_HOME); // Redirect after validation
-                        }
-                      : null,
-                  child: const Text('✅ Valider Présence'),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await controller.markPresence(
+                        etudiantId: etudiant.id!,
+                        typePresenceString: TypePresence.PRESENT.name,
+                      );
+                      Get.snackbar(
+                        'Succès',
+                        'Présence validée',
+                        backgroundColor: Colors.green,
+                        colorText: Colors.white,
+                      );
+                      Get.offNamed(VigileController.ROUTE_HOME);
+                    } catch (e) {
+                      Get.snackbar(
+                        'Erreur',
+                        'Échec de l\'enregistrement de la présence',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.check_circle),
+                  label: const Text('Valider Présence'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () async {
-                          await controller.markPresence(
-                            etudiant.id!.toString(),
-                            TypePresence.RETARD.name,
-                          );
-                          Get.offNamed(AppRoutes.Vigile_HOME); // Redirect after marking retard
-                        }
-                      : null,
-                  child: const Text('Retard'),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await controller.markPresence(
+                        etudiantId: etudiant.id!,
+                        typePresenceString: TypePresence.RETARD.name,
+                      );
+                      Get.snackbar(
+                        'Information',
+                        'Retard enregistré',
+                        backgroundColor: Colors.orange,
+                        colorText: Colors.white,
+                      );
+                      Get.offNamed(VigileController.ROUTE_HOME);
+                    } catch (e) {
+                      Get.snackbar(
+                        'Erreur',
+                        'Échec de l\'enregistrement du retard',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.watch_later),
+                  label: const Text('Marquer en Retard'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: etudiant.id != null
-                      ? () async {
-                          await controller.markPresence(
-                            etudiant.id!.toString(),
-                            TypePresence.ABSENT.name,
-                          );
-                          Get.offNamed(AppRoutes.Vigile_HOME); // Redirect after refusal
-                        }
-                      : null,
-                  child: const Text('❌ Refuser Présence'),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await controller.markPresence(
+                        etudiantId: etudiant.id!,
+                        typePresenceString: TypePresence.ABSENT.name,
+                      );
+                      Get.snackbar(
+                        'Information',
+                        'Absence enregistrée',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                      Get.offNamed(VigileController.ROUTE_HOME);
+                    } catch (e) {
+                      Get.snackbar(
+                        'Erreur',
+                        'Échec de l\'enregistrement de l\'absence',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.person_off),
+                  label: const Text('Marquer Absent'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ],
@@ -107,6 +181,21 @@ class VigileEtudiantView extends GetView<VigileHomeController> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      children: [
+        Text(
+          '$label: ',
+          style: AppTheme.subtitleStyle.copyWith(fontWeight: FontWeight.bold),
+        ),
+        Text(
+          value,
+          style: AppTheme.subtitleStyle,
+        ),
+      ],
     );
   }
 }

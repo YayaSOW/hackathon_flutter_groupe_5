@@ -1,29 +1,63 @@
+import 'package:ges_absence/app/data/enums/type_presence.dart';
+import 'package:ges_absence/app/data/models/presence.dart';
 import 'package:ges_absence/app/utils/base_service.dart';
 import 'package:ges_absence/env.dart';
 import 'package:get/get.dart';
-import 'package:ges_absence/app/data/models/presence.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PresenceService extends GetxService with BaseService {
-  // final String baseUrl;
-  // final String baseUrl = 'http://10.0.2.2:3000';
-  // final String baseUrl = 'http://172.16.10.163:3000';
-  // final String baseUrl = 'http://localhost:3000';
-  // PresenceService() : baseUrl = Env.baseUrl;
-
+  // Méthode principale pour récupérer les absences via le backend Spring
   Future<List<Presence>> getAbsencesByEtudiantId(String etudiantId) async {
-    final response = await http.get(Uri.parse('$baseUrl/presences'));
-    if (response.statusCode == 200) {
-      final List data = jsonDecode(response.body);
-      return data
-          .map((json) => Presence.fromJson(json))
-          .where((presence) =>
-              presence.etudiant.id == etudiantId &&
-              presence.typePresence == 0)
-          .toList();
-    } else {
-      throw Exception('Erreur chargement des absences');
+    try {
+      final uri = Uri.parse('$baseUrl/api/v1/presences?etudiant.id=$etudiantId');
+      final response = await http.get(
+        uri,
+        headers: {'Accept': 'application/json'},
+      );
+
+      print('Requête envoyée à: $uri');
+      print('Réponse: ${response.statusCode} - ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['status'] == 200 && data['results'] != null) {
+          final presencesData = data['results'] as List;
+          return presencesData
+              .map((json) => Presence.fromJson(json))
+              .where((presence) => presence.typePresence == TypePresence.ABSENT)
+              .toList();
+        }
+      }
+      return [];
+    } catch (e) {
+      print('Erreur lors de la récupération des absences: $e');
+      throw Exception('Erreur chargement des absences: $e');
+    }
+  }
+
+  // Méthode mock pour json-server
+  Future<List<Presence>> getAbsencesByEtudiantIdMock(String etudiantId) async {
+    try {
+      final uri = Uri.parse('$baseUrl/presences');
+      final response = await http.get(
+        uri,
+        headers: {'Accept': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data
+            .map((json) => Presence.fromJson(json))
+            .where((presence) =>
+                presence.etudiant?.id == etudiantId &&
+                presence.typePresence == TypePresence.ABSENT)
+            .toList();
+      }
+      return [];
+    } catch (e) {
+      print('Erreur lors de la récupération des absences mock: $e');
+      return [];
     }
   }
 }

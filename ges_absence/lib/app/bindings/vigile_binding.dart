@@ -4,6 +4,6 @@ import 'package:get/get.dart';
 class VigileBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<VigileHomeController>(() => VigileHomeController());
+    Get.lazyPut<VigileController>(() => VigileController());
   }
 }

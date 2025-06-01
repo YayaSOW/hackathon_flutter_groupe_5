@@ -5,7 +5,7 @@ import '../controllers/vigile_controller.dart';
 import 'package:ges_absence/theme/app_theme.dart';
 import 'package:ges_absence/theme/colors.dart';
 
-class VigileScanView extends GetView<VigileHomeController> {
+class VigileScanView extends GetView<VigileController> {
   final _matriculeController = TextEditingController();
 
   @override

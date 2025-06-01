@@ -4,6 +4,7 @@ import 'package:ges_absence/app/modules/etudiant/views/justification_view.dart';
 import 'package:get/get.dart';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/theme/colors.dart';
+import 'package:intl/intl.dart';
 
 class AbsencesView extends GetView<AbsencesController> {
   const AbsencesView({super.key});
@@ -26,16 +27,19 @@ class AbsencesView extends GetView<AbsencesController> {
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   elevation: 4,
-                  color: AppColors.primaryColor.withOpacity(0.2),
+                  color: _getCardColor(absence.typePresence),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   child: ListTile(
-                    leading: const Icon(Icons.warning, color: AppColors.secondaryColor),
+                    leading: Icon(
+                      _getStatusIcon(absence.typePresence),
+                      color: AppColors.secondaryColor,
+                    ),
                     title: Text(
-                      absence.cours.nomCours,
+                      absence.cours?.nomCours ?? 'Cours non spécifié',
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "${absence.date.day}/${absence.date.month}/${absence.date.year} • Raison: ${absence.typePresence == TypePresence.ABSENT ? 'Absence' : 'Non définie'}",
+                      "${_formatDate(absence.date)} • ${_getTypePresenceText(absence.typePresence)}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                     trailing: IconButton(
@@ -49,5 +53,42 @@ class AbsencesView extends GetView<AbsencesController> {
               },
             )),
     );
+  }
+
+  Color _getCardColor(TypePresence type) {
+    switch (type) {
+      case TypePresence.ABSENT:
+        return AppColors.primaryColor.withOpacity(0.2);
+      case TypePresence.RETARD:
+        return Colors.orange.withOpacity(0.2);
+      default:
+        return AppColors.primaryColor.withOpacity(0.2);
+    }
+  }
+
+  IconData _getStatusIcon(TypePresence type) {
+    switch (type) {
+      case TypePresence.ABSENT:
+        return Icons.warning;
+      case TypePresence.RETARD:
+        return Icons.watch_later;
+      default:
+        return Icons.warning;
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date); // Format français
+  }
+
+  String _getTypePresenceText(TypePresence type) {
+    switch (type) {
+      case TypePresence.ABSENT:
+        return 'Absence';
+      case TypePresence.RETARD:
+        return 'Retard';
+      case TypePresence.PRESENT:
+        return 'Présent';
+    }
   }
 }

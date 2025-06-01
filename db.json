@@ -1,104 +1,204 @@
 {
   "vigiles": [
     {
-      "id": "1",
+      "id": "674d5e8f123456789abcdef0",
       "nom": "Traore",
       "prenom": "Ousmane",
       "login": "vigile",
       "telephone": "771234567",
-      "password": "pass"
+      "password": "pass",
+      "role": "VIGILE"
     }
   ],
   "etudiants": [
     {
-      "id": "1",
+      "id": "674d5e8f123456789abcdef1",
       "nom": "Diop",
       "prenom": "Ousmane",
       "login": "ousmane",
       "telephone": "123456",
       "password": "pass",
       "matricule": "M123",
-      "status": true
+      "classe": {
+        "id": "674d5e8f123456789abcdef8",
+        "filiere": "Informatique",
+        "niveau": "L3",
+        "nomClasse": "L3 Informatique"
+      },
+      "status": true,
+      "absences": [],
+      "role": "ETUDIANT"
+    }
+  ],
+  "classes": [
+    {
+      "id": "674d5e8f123456789abcdef8",
+      "filiere": "Informatique",
+      "niveau": "L3",
+      "nomClasse": "L3 Informatique",
+      "etudiants": [
+        {
+          "id": "674d5e8f123456789abcdef1",
+          "nom": "Diop",
+          "prenom": "Ousmane",
+          "matricule": "M123",
+          "status": true
+        }
+      ]
     }
   ],
   "cours": [
     {
-      "id": "1",
+      "id": "674d5e8f123456789abcdef2",
       "nomCours": "Angular",
-      "date": "2025-05-29T09:00:00Z",
-      "duree": 4,
-      "heureDebut": "13:00",
-      "heureFin": "17:00"
+      "date": "2025-05-29T09:00:00",
+      "heureDebut": "13:00:00",
+      "heureFin": "17:00:00",
+      "absences": []
     },
     {
-      "id": "2",
+      "id": "674d5e8f123456789abcdef3",
       "nomCours": "Flutter",
-      "date": "2025-05-28T14:00:00Z",
-      "duree": 4,
-      "heureDebut": "14:00",
-      "heureFin": "18:00"
+      "date": "2025-05-28T14:00:00",
+      "heureDebut": "14:00:00",
+      "heureFin": "18:00:00",
+      "absences": []
     },
     {
-      "id": "3",
+      "id": "674d5e8f123456789abcdef4",
       "nomCours": "Spring Boot",
-      "date": "2025-06-01T10:00:00Z",
-      "duree": 3,
-      "heureDebut": "10:00",
-      "heureFin": "13:00"
+      "date": "2025-06-01T10:00:00",
+      "heureDebut": "10:00:00",
+      "heureFin": "13:00:00",
+      "absences": []
     }
   ],
   "presences": [
     {
-      "id": "1",
-      "date": "2025-05-20T00:00:00Z",
-      "typePresence": 0,
+      "id": "674d5e8f123456789abcdef5",
+      "date": "2025-05-20T00:00:00",
+      "typePresence": "ABSENT",
       "etudiant": {
-        "id": "1",
+        "id": "674d5e8f123456789abcdef1",
         "nom": "Diop",
         "prenom": "Ousmane",
-        "login": "ousmane",
-        "telephone": "123456",
-        "password": "pass",
         "matricule": "M123",
+        "classe": "L3 Informatique",
         "status": true
       },
       "cours": {
-        "id": "1",
+        "id": "674d5e8f123456789abcdef2",
         "nomCours": "Angular",
-        "date": "2025-05-29T09:00:00Z",
-        "duree": 4,
-        "heureDebut": "13:00",
-        "heureFin": "17:00"
+        "date": "2025-05-29T09:00:00",
+        "heureDebut": "13:00:00",
+        "heureFin": "17:00:00"
       },
-      "vigile": null,
-      "justification": {
-        "reason": "vvvvvv",
-        "filePath": "blob:http://localhost:61092/9a3d8387-e7b1-4b2a-934d-0673c1feb05b"
+      "justificatifs": [
+        {
+          "id": "674d5e8f123456789abcdef6",
+          "motif": "Certificat médical",
+          "validation": false,
+          "presenceId": "674d5e8f123456789abcdef5"
+        }
+      ],
+      "admin": null
+    },
+    {
+      "id": "674d5e8f123456789abcdef7",
+      "date": "2025-05-22T00:00:00",
+      "typePresence": "RETARD",
+      "etudiant": {
+        "id": "674d5e8f123456789abcdef1",
+        "nom": "Diop",
+        "prenom": "Ousmane",
+        "matricule": "M123",
+        "classe": "L3 Informatique",
+        "status": true
+      },
+      "cours": {
+        "id": "674d5e8f123456789abcdef3",
+        "nomCours": "Flutter",
+        "date": "2025-05-28T14:00:00",
+        "heureDebut": "14:00:00",
+        "heureFin": "18:00:00"
+      },
+      "justificatifs": [],
+      "admin": null
+    }
+  ],
+  "justificatifs": [
+    {
+      "id": "674d5e8f123456789abcdef6",
+      "motif": "Certificat médical",
+      "validation": false,
+      "presence": {
+        "id": "674d5e8f123456789abcdef5",
+        "date": "2025-05-20T00:00:00",
+        "typePresence": "ABSENT"
       }
     },
     {
-      "id": "2",
-      "date": "2025-05-22T00:00:00Z",
-      "typePresence": 2,
-      "etudiant": {
-        "id": "1",
+      "id": "88ce",
+      "motif": "vvv",
+      "presenceId": "674d5e8f123456789abcdef5",
+      "validation": false
+    }
+  ],
+  "auth/login": [
+    {
+      "status": 200,
+      "results": {
+        "nom": "Traore",
+        "prenom": "Ousmane",
+        "login": "vigile",
+        "telephone": "771234567",
+        "password": "pass"
+      },
+      "type": "UserOneResponse",
+      "id": "a182"
+    },
+    {
+      "status": 200,
+      "results": {
+        "id": "674d5e8f123456789abcdef1",
         "nom": "Diop",
         "prenom": "Ousmane",
-        "login": "ousmane",
-        "telephone": "123456",
-        "password": "pass",
         "matricule": "M123",
-        "status": true
+        "classe": "L3 Informatique",
+        "status": true,
+        "password": "pass"
       },
-      "cours": {
-        "id": "2",
-        "nomCours": "Flutter",
-        "date": "2025-05-28T14:00:00Z",
-        "duree": 4,
-        "heureDebut": "14:00",
-        "heureFin": "18:00"
-      },
-      "vigile": null
+      "type": "EtudiantOneResponse",
+      "id": "de83"
     }
-]
+  ],
+  "etudiants/:id/presences": [
+    {
+      "status": 200,
+      "results": {
+        "etudiant": {
+          "id": "674d5e8f123456789abcdef1",
+          "nom": "Diop",
+          "prenom": "Ousmane",
+          "matricule": "M123",
+          "classe": "L3 Informatique",
+          "status": true
+        },
+        "presences": [
+          {
+            "date": "2025-05-20T00:00:00",
+            "cours": "Angular",
+            "typePresence": "ABSENT"
+          },
+          {
+            "date": "2025-05-22T00:00:00",
+            "cours": "Flutter",
+            "typePresence": "RETARD"
+          }
+        ]
+      },
+      "type": "EtudiantAndPresencesResponse",
+      "id": "d786"
+    }
+  ]
 }

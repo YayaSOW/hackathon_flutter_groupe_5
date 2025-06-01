@@ -14,7 +14,6 @@ class JustificationController extends GetxController {
   }
 
   Future<void> submitJustification(String presenceId) async {
-    // Validation des champs
     if (reasonController.text.trim().isEmpty) {
       Get.snackbar(
         'Erreur',
@@ -38,26 +37,32 @@ class JustificationController extends GetxController {
     }
 
     try {
-      // Simuler l'envoi au serveur (à remplacer par une vraie requête API)
-      await apiService.submitJustification(
+      final success = await apiService.submitJustificationMock( // Utiliser la version mock
         presenceId: presenceId,
-        reason: reasonController.text,
-        filePath: selectedFile.value!.path,
+        motif: reasonController.text,
       );
 
-      // Afficher le message de succès
-      Get.snackbar(
-        'Succès',
-        'Justification envoyée avec succès',
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      if (success) {
+        Get.snackbar(
+          'Succès',
+          'Justification envoyée avec succès',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
 
-      // Rediriger après un délai
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        Get.offAllNamed(AppRoutes.Etudiant_HOME);
-      });
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          Get.offAllNamed(AppRoutes.Etudiant_HOME);
+        });
+      } else {
+        Get.snackbar(
+          'Erreur',
+          'Échec de la soumission',
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
     } catch (e) {
       Get.snackbar(
         'Erreur',
