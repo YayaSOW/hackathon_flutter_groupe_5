@@ -14,18 +14,27 @@ class AuthController extends GetxController {
     try {
       isLoading(true);
       final result = await apiService.login(login, password);
+
       if (result != null) {
-        if (result['type'] == 'etudiant') {
-          etudiant.value = result['user'] as Etudiant;
+        final userData = result['user'];
+        print('USERDATA: $userData');
+        final role = result['type'];
+        final token = result['token'];
+
+        if (role == 'ETUDIANT') {
+          etudiant.value = Etudiant.fromJson(userData);
           Get.offNamed(AppRoutes.Etudiant_HOME);
-        } else if (result['type'] == 'vigile') {
-          vigile.value = result['user'] as Vigile;
-          Get.offNamed(AppRoutes.Vigile_HOME); 
+        } else if (role == 'VIGILE') {
+          vigile.value = Vigile.fromJson(userData);
+          Get.offNamed(AppRoutes.Vigile_HOME);
+        } else {
+          Get.snackbar('Erreur', 'Rôle utilisateur inconnu');
         }
       } else {
         Get.snackbar('Erreur', 'Identifiants incorrects');
       }
     } catch (e) {
+      print('Exception de login : $e');
       Get.snackbar('Erreur', 'Connexion échouée: $e');
     } finally {
       isLoading(false);

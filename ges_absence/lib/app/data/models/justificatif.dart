@@ -14,10 +14,9 @@ class Justificatif {
   });
 
   factory Justificatif.fromJson(Map<String, dynamic> json) => Justificatif(
-        // id: json['id'],
-        id: int.parse(json['id'].toString()),
-        motif: json['motif'],
-        validation: json['validation'],
-        presence: Presence.fromJson(json['presence']),
-      );
+    id: json['id'] ?? '',
+    motif: json['motif'],
+    validation: json['validation'],
+    presence: Presence.fromJson(json['presence']),
+  );
 }

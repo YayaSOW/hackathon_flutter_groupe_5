@@ -13,14 +13,17 @@ class PresenceService extends GetxService with BaseService {
   // PresenceService() : baseUrl = Env.baseUrl;
 
   Future<List<Presence>> getAbsencesByEtudiantId(String etudiantId) async {
-    final response = await http.get(Uri.parse('$baseUrl/presences'));
+    final response = await http.get(Uri.parse('$baseUrl/api/v1/presences'));
+    print('Reponse brute : ${response.body}');
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
       return data
           .map((json) => Presence.fromJson(json))
-          .where((presence) =>
-              presence.etudiant.id == etudiantId &&
-              presence.typePresence == 0)
+          .where(
+            (presence) =>
+                presence.etudiant.id == etudiantId &&
+                presence.typePresence == 0,
+          )
           .toList();
     } else {
       throw Exception('Erreur chargement des absences');

@@ -19,8 +19,8 @@ class Cours {
 
   factory Cours.fromJson(Map<String, dynamic> json) {
     return Cours(
-      // id: json['id'],
-      id: int.parse(json['id'].toString()),
+      id: json['id'] ?? '',
+      // id: int.parse(json['id'].toString()),
       nomCours: json['nomCours'] as String,
       date: DateTime.parse(json['date'] as String),
       duree: json['duree'] as int,

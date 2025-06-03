@@ -17,13 +17,13 @@ class Etudiant extends User {
 
   factory Etudiant.fromJson(Map<String, dynamic> json) => Etudiant(
     // id: json['id'],
-    id: int.parse(json['id'].toString()),
-    nom: json['nom'],
-    prenom: json['prenom'],
-    login: json['login'],
-    telephone: json['telephone'],
-    password: json['password'],
-    matricule: json['matricule'],
-    status: json['status'],
+    id: json['id'] ?? '',
+    nom: json['nom'] ?? '',
+    prenom: json['prenom'] ?? '',
+    login: json['login'] ?? '',
+    telephone: json['telephone'] ?? '',
+    password: json['password'] ?? '',
+    matricule: json['matricule'] ?? '',
+    status: json['status'] ?? '',
   );
 }

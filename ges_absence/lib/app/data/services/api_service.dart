@@ -17,76 +17,37 @@ class ApiService extends GetxService with BaseService {
 
   // ApiService() : baseUrl = Env.baseUrl;
 
-  Future<Etudiant?> loginEtudiant(String login, String password) async {
-    try {
-      final uri = Uri.parse(
-        '$baseUrl/etudiants?login=$login&password=$password',
-      );
-      final response = await http.get(
-        uri,
-        headers: {'Accept': 'application/json'},
-      );
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        if (data.isNotEmpty) {
-          return Etudiant.fromJson(data[0]);
-        }
-      }
-      return null;
-    } catch (e) {
-      print('Erreur lors de la connexion étudiant: $e');
-      return null;
-    }
-  }
-
-  Future<Vigile?> loginVigile(String login, String password) async {
-    try {
-      final uri = Uri.parse('$baseUrl/vigiles?login=$login&password=$password');
-      final response = await http.get(
-        uri,
-        headers: {'Accept': 'application/json'},
-      );
-      print('Requête envoyée à: $uri');
-      print('Réponse brute: ${response.body}');
-      if (response.statusCode == 200) {
-        print('Réponse reçue: ${response.body}');
-        final List<dynamic> data = jsonDecode(response.body);
-        if (data.isNotEmpty) {
-          print('Vigile trouvé: ${data[0]}');
-          print('Vigile JSON: ${Vigile.fromJson(data[0])}');
-          return Vigile.fromJson(data[0]);
-        }
-      }
-      return null;
-    } catch (e) {
-      print('Erreur lors de la connexion vigile: $e');
-      return null;
-    }
-  }
-
   Future<Map<String, dynamic>?> login(String login, String password) async {
     try {
-      final etudiant = await loginEtudiant(login, password);
-      if (etudiant != null) {
-        return {'type': 'etudiant', 'user': etudiant};
-      }
+      final uri = Uri.parse('$baseUrl/api/v1/auth/login');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'login': login, 'password': password}),
+      );
 
-      final vigile = await loginVigile(login, password);
-      if (vigile != null) {
-        return {'type': 'vigile', 'user': vigile};
-      }
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final results = data['results'];
 
-      return null;
+        final user = results['user'];
+        final role = user['role'];
+        final token = results['token'];
+
+        return {'type': role, 'user': user, 'token': token};
+      } else {
+        print('Erreur login: ${response.body}');
+        return null;
+      }
     } catch (e) {
-      throw Exception('Erreur lors de la connexion: $e');
+      print('Erreur dans apiService.login(): $e');
+      return null;
     }
   }
 
   Future<List<Presence>> getPresencesForEtudiant(String etudiantId) async {
     try {
-      final uri = Uri.parse(
-        '$baseUrl/presences?etudiant.id=$etudiantId&_expand=etudiant&_expand=cours',
-      );
+      final uri = Uri.parse('$baseUrl/api/v1/presences/etudiant/$etudiantId');
       print('Requête envoyée à: $uri');
       final response = await http.get(uri);
       print('Réponse brute: ${response.body}');
@@ -138,7 +99,7 @@ class ApiService extends GetxService with BaseService {
 
   Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
     try {
-      final uri = Uri.parse('$baseUrl/etudiants');
+      final uri = Uri.parse('$baseUrl/api/v1/etudiants/matricule/$matricule');
       final response = await http.get(
         uri,
         headers: {'Accept': 'application/json'},
@@ -165,7 +126,7 @@ class ApiService extends GetxService with BaseService {
 
   Future<void> markPresence(String etudiantId, String typePresence) async {
     try {
-      final uri = Uri.parse('$baseUrl/presences');
+      final uri = Uri.parse('$baseUrl/api/v1/presences');
       final response = await http.post(
         uri,
         headers: {
