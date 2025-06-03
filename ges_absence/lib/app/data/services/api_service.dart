@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/app/data/models/vigile.dart';
 import 'package:ges_absence/app/utils/base_service.dart';
-import 'package:ges_absence/env.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:get/get.dart';
 import '../models/etudiant.dart';
 import '../models/presence.dart';
@@ -108,20 +108,31 @@ class ApiService extends GetxService with BaseService {
   Future<void> submitJustification({
     required String presenceId,
     required String reason,
-    required String filePath,
+    required List<String> filePaths, // Liste de chemins de fichiers
   }) async {
     try {
+      final uri = Uri.parse('$baseUrl/presences/$presenceId');
       final response = await http.patch(
-        Uri.parse('$baseUrl/presences/$presenceId'),
+        uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'justification': {'reason': reason, 'filePath': filePath},
+          'justification': {
+            'reason': reason,
+            'files': filePaths, // Envoie une liste de chemins
+          },
         }),
       );
+
+      print('Requête envoyée à: $uri');
+      print('Réponse: ${response.statusCode} - ${response.body}');
+
       if (response.statusCode != 200) {
-        throw Exception('Erreur lors de la soumission: ${response.statusCode}');
+        throw Exception(
+          'Erreur lors de la soumission: ${response.statusCode} - ${response.body}',
+        );
       }
     } catch (e) {
+      print('Erreur lors de la soumission de la justification: $e');
       throw Exception('Erreur lors de la soumission de la justification: $e');
     }
   }

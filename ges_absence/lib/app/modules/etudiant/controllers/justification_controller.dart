@@ -5,12 +5,16 @@ import 'package:ges_absence/app/data/services/api_service.dart';
 import 'package:ges_absence/app/routes/app_routes.dart';
 
 class JustificationController extends GetxController {
-  var selectedFile = Rx<File?>(null);
+  var selectedFiles = RxList<File>([]); // Liste de fichiers
   final reasonController = TextEditingController();
   final ApiService apiService = Get.find();
 
-  void setFile(File file) {
-    selectedFile.value = file;
+  void addFiles(List<File> files) {
+    selectedFiles.addAll(files); // Ajoute les nouveaux fichiers à la liste
+  }
+
+  void removeFile(int index) {
+    selectedFiles.removeAt(index); // Supprime un fichier de la liste
   }
 
   Future<void> submitJustification(String presenceId) async {
@@ -26,10 +30,10 @@ class JustificationController extends GetxController {
       return;
     }
 
-    if (selectedFile.value == null) {
+    if (selectedFiles.isEmpty) {
       Get.snackbar(
         'Erreur',
-        'Veuillez sélectionner un fichier justificatif',
+        'Veuillez sélectionner au moins un fichier justificatif',
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
@@ -38,11 +42,12 @@ class JustificationController extends GetxController {
     }
 
     try {
-      // Simuler l'envoi au serveur (à remplacer par une vraie requête API)
+      // Préparer les chemins des fichiers pour l'envoi
+      final filePaths = selectedFiles.map((file) => file.path).toList();
       await apiService.submitJustification(
         presenceId: presenceId,
         reason: reasonController.text,
-        filePath: selectedFile.value!.path,
+        filePaths: filePaths, // Envoie une liste de chemins
       );
 
       // Afficher le message de succès

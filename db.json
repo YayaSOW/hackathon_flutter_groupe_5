@@ -72,8 +72,11 @@
       },
       "vigile": null,
       "justification": {
-        "reason": "vvvvvv",
-        "filePath": "blob:http://localhost:61092/9a3d8387-e7b1-4b2a-934d-0673c1feb05b"
+        "reason": "hhhhhhhhhh",
+        "files": [
+          "blob:http://localhost:63243/727edd6b-5c81-486e-89cc-98588d0a9f3d",
+          "blob:http://localhost:63243/695a7459-0ea4-4cf3-bee2-4605735a8cbc"
+        ]
       }
     },
     {
@@ -100,5 +103,5 @@
       },
       "vigile": null
     }
-]
+  ]
 }
