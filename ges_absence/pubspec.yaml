@@ -22,6 +22,7 @@ dependencies:
   qr_flutter: ^4.0.0
   table_calendar: ^3.0.9
   mobile_scanner: ^3.5.4
+  cloudinary_public: ^0.21.0
 
 
 

@@ -9,14 +9,6 @@ import '../models/etudiant.dart';
 import '../models/presence.dart';
 
 class ApiService extends GetxService with BaseService {
-  // final String baseUrl;
-
-  // ApiService({this.baseUrl = 'http://10.0.2.2:3000'});
-  // ApiService({this.baseUrl = 'http://172.16.10.163:3000'});
-  // ApiService({this.baseUrl = 'http://localhost:3000'});
-
-  // ApiService() : baseUrl = Env.baseUrl;
-
   Future<Etudiant?> loginEtudiant(String login, String password) async {
     try {
       final uri = Uri.parse(
@@ -108,14 +100,14 @@ class ApiService extends GetxService with BaseService {
   Future<void> submitJustification({
     required String presenceId,
     required String reason,
-    required String filePath,
+    required List<String> fileUrls,
   }) async {
     try {
       final response = await http.patch(
         Uri.parse('$baseUrl/presences/$presenceId'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'justification': {'reason': reason, 'filePath': filePath},
+          'justification': {'reason': reason, 'fileUrls': fileUrls},
         }),
       );
       if (response.statusCode != 200) {

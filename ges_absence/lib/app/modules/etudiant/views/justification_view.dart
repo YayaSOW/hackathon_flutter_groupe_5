@@ -21,7 +21,7 @@ class JustificationView extends StatelessWidget {
         backgroundColor: AppColors.primaryColor,
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      body: Padding(
+      body: SingleChildScrollView( // Wrap the body in SingleChildScrollView to allow scrolling
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,7 @@ class JustificationView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFFED9C37), 
+                color: const Color(0xFFED9C37),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -86,7 +86,7 @@ class JustificationView extends StatelessWidget {
 
             // === JUSTIFICATIF ===
             const Text(
-              "Justificatif :",
+              "Justificatifs :",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 8),
@@ -101,32 +101,56 @@ class JustificationView extends StatelessWidget {
                 children: [
                   const Icon(Icons.add, size: 40, color: Colors.black54),
                   const SizedBox(height: 8),
-                  const Text("Déposez votre fichier ici", style: TextStyle(fontSize: 14)),
+                  const Text("Déposez vos fichiers ici", style: TextStyle(fontSize: 14)),
                   const SizedBox(height: 12),
-                  Obx(() => ElevatedButton.icon(
-                        onPressed: () async {
-                          final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-                          if (pickedFile != null) {
-                            controller.setFile(File(pickedFile.path));
-                          }
-                        },
-                        icon: const Icon(Icons.upload),
-                        label: Text(
-                          controller.selectedFile.value != null
-                              ? controller.selectedFile.value!.path.split('/').last
-                              : "Importer",
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.grey.shade300,
-                          foregroundColor: Colors.black87,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                        ),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+                      if (pickedFile != null) {
+                        controller.addFile(File(pickedFile.path));
+                      }
+                    },
+                    icon: const Icon(Icons.upload),
+                    label: const Text("Ajouter une image"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade300,
+                      foregroundColor: Colors.black87,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Obx(() => Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: controller.selectedFiles.map((file) => Stack(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: FileImage(file),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(Icons.remove_circle, color: Colors.red),
+                                onPressed: () => controller.removeFile(file),
+                              ),
+                            ),
+                          ],
+                        )).toList(),
                       )),
                 ],
               ),
             ),
 
-            const Spacer(),
+            const SizedBox(height: 24), // Add spacing before the button
 
             // === SOUMETTRE ===
             SizedBox(
