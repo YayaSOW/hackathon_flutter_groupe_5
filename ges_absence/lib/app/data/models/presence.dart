@@ -24,7 +24,9 @@ class Presence {
     return Presence(
       id: json['id']?.toString(),
       date: DateTime.parse(json['date'] as String),
-      typePresence: TypePresence.values[json['typePresence'] as int],
+      typePresence: TypePresence.values.firstWhere(
+        (e) => e.name == json['typePresence'],
+      ),
       etudiant: Etudiant.fromJson(json['etudiant'] as Map<String, dynamic>),
       cours: Cours.fromJson(json['cours'] as Map<String, dynamic>),
       vigile:

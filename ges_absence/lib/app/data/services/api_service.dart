@@ -47,13 +47,26 @@ class ApiService extends GetxService with BaseService {
 
   Future<List<Presence>> getPresencesForEtudiant(String etudiantId) async {
     try {
-      final uri = Uri.parse('$baseUrl/api/v1/presences/etudiant/$etudiantId');
+      final uri = Uri.parse(
+        '$baseUrl/api/v1/presences/type=ABSENT/etudiant/$etudiantId',
+      );
       print('Requête envoyée à: $uri');
       final response = await http.get(uri);
       print('Réponse brute: ${response.body}');
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        final presences = data.map((json) => Presence.fromJson(json)).toList();
+        final Map<String, dynamic> json = jsonDecode(response.body);
+        final List<dynamic> data = json['results']['presences'];
+        final presences =
+            data.map((presence) {
+              return Presence.fromJson({
+                'id': presence['id'],
+                'date': presence['date'],
+                'typePresence': _typePresenceToIndex(presence['typePresence']),
+                'etudiant': json['results']['etudiant'],
+                'cours': {'id': null, 'nomCours': presence['cours']},
+                'vigile': null,
+              });
+            }).toList();
         print('Présences parsées: ${presences.map((p) => p.toJson())}');
         return presences;
       } else {
@@ -63,6 +76,22 @@ class ApiService extends GetxService with BaseService {
     } catch (e) {
       print('Erreur lors de la récupération des présences: $e');
       return [];
+    }
+  }
+
+  int _typePresenceToIndex(String? type) {
+    switch (type?.toUpperCase()) {
+      case 'PRESENT':
+        return TypePresence.PRESENT.index;
+      case 'ABSENT':
+        return TypePresence.ABSENT.index;
+      case 'RETARD':
+        return TypePresence.RETARD.index;
+      default:
+        print(
+          "TypePresence inconnu : $type. Utilisation de PRESENT par défaut.",
+        );
+        return TypePresence.ABSENT.index; // ou ABSENT selon ce que tu préfères
     }
   }
 
