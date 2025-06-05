@@ -1,23 +1,31 @@
-import 'package:ges_absence/app/data/models/presence.dart';
-
 class Justificatif {
   final int? id;
   final String motif;
   final bool validation;
-  final Presence presence;
+  final String presenceId;
+  final List<Map<String, String>> justificatif; 
 
   Justificatif({
     this.id,
     required this.motif,
     required this.validation,
-    required this.presence,
+    required this.presenceId,
+    required this.justificatif,
   });
 
   factory Justificatif.fromJson(Map<String, dynamic> json) => Justificatif(
-        // id: json['id'],
-        id: int.parse(json['id'].toString()),
-        motif: json['motif'],
-        validation: json['validation'],
-        presence: Presence.fromJson(json['presence']),
-      );
+    id: int.parse(json['id'].toString()),
+    motif: json['motif'],
+    validation: json['validation'],
+    presenceId: json['presenceId'],
+    justificatif: (json['justificatif'] as List<dynamic>).map((item) => {'url': item['url'] as String}).toList(),
+  );
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'motif': motif,
+    'validation': validation,
+    'presenceId': presenceId,
+    'justificatif': justificatif,
+  };
 }

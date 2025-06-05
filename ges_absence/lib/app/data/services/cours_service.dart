@@ -5,21 +5,27 @@ import 'package:get/get.dart';
 import '../models/cours.dart';
 import 'package:http/http.dart' as http;
 
-class CoursService extends GetxService with BaseService {
-    // final String baseUrl;
-  // final String baseUrl = "http://10.0.2.2:3000";
-  // final String baseUrl = 'http://172.16.10.163:3000';
-  // final String baseUrl = "http://localhost:3000";
-  // CoursService() : baseUrl = Env.baseUrl;
+class CoursService extends GetxService {
+  final String baseUrl = 'http://localhost:3000';
 
-  Future<List<Cours>> fetchCours() async {
-    final response = await http.get(Uri.parse('$baseUrl/cours'));
-
-    if (response.statusCode == 200) {
-      final List data = json.decode(response.body);
-      return data.map((e) => Cours.fromJson(e)).toList();
-    } else {
-      throw Exception("Erreur lors du chargement des cours");
+  Future<List<Cours>> getAllCours() async {
+    try {
+      final uri = Uri.parse('$baseUrl/cours');
+      print('Requête envoyée à: $uri');
+      final response = await http.get(uri);
+      print('Réponse brute: ${response.body}');
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final cours = data.map((json) => Cours.fromJson(json)).toList();
+        print('Cours parsés: $cours');
+        return cours;
+      } else {
+        print('Erreur HTTP: ${response.statusCode} - ${response.body}');
+        return [];
+      }
+    } catch (e) {
+      print('Erreur lors de la récupération des cours: $e');
+      return [];
     }
   }
 }

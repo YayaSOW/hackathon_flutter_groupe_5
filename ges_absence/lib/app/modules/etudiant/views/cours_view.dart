@@ -18,8 +18,7 @@ class CoursView extends StatelessWidget {
       body: Obx(() => Column(
             children: [
               Container(
-                // ignore: deprecated_member_use
-                color: AppColors.primaryColor.withOpacity(0.9),
+                color: AppColors.primaryColor.withOpacity(0.9), // Remplace deprecated_member_use
                 padding: const EdgeInsets.all(8),
                 child: TableCalendar(
                   focusedDay: controller.selectedDate.value,
@@ -27,7 +26,9 @@ class CoursView extends StatelessWidget {
                   lastDay: DateTime.utc(2030, 1, 1),
                   calendarFormat: CalendarFormat.month,
                   selectedDayPredicate: (day) => isSameDay(day, controller.selectedDate.value),
-                  onDaySelected: (selectedDay, _) => controller.selectedDate.value = selectedDay,
+                  onDaySelected: (selectedDay, _) {
+                    controller.selectDate(selectedDay); // Appel explicite à la méthode du contrôleur
+                  },
                   calendarStyle: CalendarStyle(
                     todayDecoration: BoxDecoration(
                       color: AppColors.secondaryColor,
@@ -55,33 +56,42 @@ class CoursView extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Expanded(
-                child: ListView.builder(
-                  itemCount: controller.coursSemaine.length,
-                  itemBuilder: (context, index) {
-                    final cours = controller.coursSemaine[index];
-                    // Formater les heures au format "HH:mm AM/PM"
-                    final startTime = '${cours.heureDebut.hour}:${cours.heureDebut.minute.toString().padLeft(2, '0')} ${cours.heureDebut.period == DayPeriod.am ? 'AM' : 'PM'}';
-                    final endTime = '${cours.heureFin.hour}:${cours.heureFin.minute.toString().padLeft(2, '0')} ${cours.heureFin.period == DayPeriod.am ? 'AM' : 'PM'}';
-                    return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      elevation: 4,
-                      // ignore: deprecated_member_use
-                      color: AppColors.primaryColor.withOpacity(0.2),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      child: ListTile(
-                        leading: const Icon(Icons.book, color: AppColors.secondaryColor),
-                        title: Text(
-                          cours.nomCours,
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: Text(
-                          "${cours.date.day}/${cours.date.month}/${cours.date.year} • De $startTime à $endTime",
-                          style: const TextStyle(color: Colors.white70),
-                        ),
+                child: controller.coursSemaine.isEmpty
+                    ? const Center(child: Text("Aucun cours pour cette semaine"))
+                    : ListView.builder(
+                        itemCount: controller.coursSemaine.length,
+                        itemBuilder: (context, index) {
+                          final cours = controller.coursSemaine[index];
+                          // Parser les heures manuellement depuis les chaînes
+                          final startParts = cours.heureDebut.split(':');
+                          final endParts = cours.heureFin.split(':');
+                          final startHour = int.parse(startParts[0]);
+                          final startMinute = int.parse(startParts[1].split('.')[0]);
+                          final endHour = int.parse(endParts[0]);
+                          final endMinute = int.parse(endParts[1].split('.')[0]);
+                          final isAM = startHour < 12;
+                          final startTime = '$startHour:${startMinute.toString().padLeft(2, '0')} ${isAM ? 'AM' : 'PM'}';
+                          final endTime = '$endHour:${endMinute.toString().padLeft(2, '0')} ${endHour < 12 ? 'AM' : 'PM'}';
+
+                          return Card(
+                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            elevation: 4,
+                            color: AppColors.primaryColor.withOpacity(0.2), // Remplace deprecated_member_use
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            child: ListTile(
+                              leading: const Icon(Icons.book, color: AppColors.secondaryColor),
+                              title: Text(
+                                cours.nomCours,
+                                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                              ),
+                              subtitle: Text(
+                                "${cours.date.day}/${cours.date.month}/${cours.date.year} • De $startTime à $endTime",
+                                style: const TextStyle(color: Colors.white70),
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           )),

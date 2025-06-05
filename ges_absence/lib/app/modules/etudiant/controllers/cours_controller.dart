@@ -3,9 +3,10 @@ import '../../../data/models/cours.dart';
 import '../../../data/services/cours_service.dart';
 
 class CoursController extends GetxController {
-  final coursService = Get.find<CoursService>();
-  final RxList<Cours> cours = <Cours>[].obs;
-  final Rx<DateTime> selectedDate = DateTime.now().obs;
+  final CoursService coursService = Get.find();
+  RxList<Cours> cours = <Cours>[].obs;
+  RxList<Cours> coursSemaine = <Cours>[].obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
 
   @override
   void onInit() {
@@ -13,14 +14,31 @@ class CoursController extends GetxController {
     loadCours();
   }
 
-  void loadCours() async {
-    final allCours = await coursService.fetchCours();
-    cours.assignAll(allCours);
+  Future<void> loadCours() async {
+    try {
+      final fetchedCours = await coursService.getAllCours();
+      cours.value = fetchedCours;
+      updateCoursSemaine();
+    } catch (e) {
+      print('Erreur lors du chargement des cours: $e');
+      Get.snackbar('Erreur', 'Impossible de charger les cours: $e');
+    }
   }
 
-  List<Cours> get coursSemaine {
-    final debut = selectedDate.value.subtract(Duration(days: selectedDate.value.weekday - 1));
-    final fin = debut.add(Duration(days: 6));
-    return cours.where((c) => c.date.isAfter(debut.subtract(Duration(seconds: 1))) && c.date.isBefore(fin.add(Duration(days: 1)))).toList();
+  void selectDate(DateTime date) {
+    selectedDate.value = date;
+    updateCoursSemaine();
+  }
+
+  void updateCoursSemaine() {
+    final startOfWeek = selectedDate.value.subtract(
+      Duration(days: selectedDate.value.weekday - 1),
+    );
+    final endOfWeek = startOfWeek.add(const Duration(days: 6));
+    coursSemaine.value =
+        cours.where((cours) {
+          return cours.date.isAfter(startOfWeek) &&
+              cours.date.isBefore(endOfWeek.add(const Duration(days: 1)));
+        }).toList();
   }
 }

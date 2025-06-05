@@ -105,21 +105,53 @@ class ApiService extends GetxService with BaseService {
     }
   }
 
+  // Future<void> submitJustification({
+  //   required String presenceId,
+  //   required String reason,
+  //   required List<String> filePaths, // Liste de chemins de fichiers
+  // }) async {
+  //   try {
+  //     final uri = Uri.parse('$baseUrl/presences/$presenceId');
+  //     final response = await http.patch(
+  //       uri,
+  //       headers: {'Content-Type': 'application/json'},
+  //       body: jsonEncode({
+  //         'justification': {
+  //           'reason': reason,
+  //           'files': filePaths, // Envoie une liste de chemins
+  //         },
+  //       }),
+  //     );
+
+  //     print('Requête envoyée à: $uri');
+  //     print('Réponse: ${response.statusCode} - ${response.body}');
+
+  //     if (response.statusCode != 200) {
+  //       throw Exception(
+  //         'Erreur lors de la soumission: ${response.statusCode} - ${response.body}',
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Erreur lors de la soumission de la justification: $e');
+  //     throw Exception('Erreur lors de la soumission de la justification: $e');
+  //   }
+  // }
   Future<void> submitJustification({
     required String presenceId,
     required String reason,
-    required List<String> filePaths, // Liste de chemins de fichiers
+    required List<String> filePaths,
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/presences/$presenceId');
+      final justificatif =
+          filePaths
+              .map((path) => {"url": "http://localhost:3000/uploads/$path"})
+              .toList(); // Simuler des URLs
       final response = await http.patch(
         uri,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'justification': {
-            'reason': reason,
-            'files': filePaths, // Envoie une liste de chemins
-          },
+          'justification': {'motif': reason, 'justificatif': justificatif},
         }),
       );
 

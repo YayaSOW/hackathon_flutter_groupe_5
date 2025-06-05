@@ -31,11 +31,11 @@ class AbsencesView extends GetView<AbsencesController> {
                   child: ListTile(
                     leading: const Icon(Icons.warning, color: AppColors.secondaryColor),
                     title: Text(
-                      absence.cours.nomCours,
+                      absence.cours, // Utiliser directement la chaîne
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "${absence.date.day}/${absence.date.month}/${absence.date.year} • Raison: ${absence.typePresence == TypePresence.ABSENT ? 'Absence' : 'Non définie'}",
+                      "${absence.date?.day ?? 0}/${absence.date?.month ?? 0}/${absence.date?.year ?? 0} • Raison: ${absence.typePresence == TypePresence.ABSENT ? 'Absence' : 'Non définie'}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                     trailing: IconButton(

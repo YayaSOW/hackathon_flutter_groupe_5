@@ -20,7 +20,7 @@ class Etudiant extends User {
   });
 
   factory Etudiant.fromJson(Map<String, dynamic> json) => Etudiant(
-    id: json['id']?.toString(), // Garder comme String
+    id: json['id'].toString(),
     nom: json['nom'],
     prenom: json['prenom'],
     login: json['login'],

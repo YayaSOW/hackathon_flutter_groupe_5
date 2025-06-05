@@ -1,5 +1,5 @@
 class User {
-  final int? id;
+  final String? id; // Changé de int? à String?
   final String nom;
   final String prenom;
   final String login;
@@ -16,8 +16,7 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    // id: json['id'],
-    id: int.parse(json['id'].toString()),
+    id: json['id']?.toString(), // Garder comme String
     nom: json['nom'],
     prenom: json['prenom'],
     login: json['login'],

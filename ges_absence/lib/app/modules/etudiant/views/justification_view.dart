@@ -15,13 +15,21 @@ class JustificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(JustificationController());
 
+    // Parser les heures si elles sont au format "HH:mm:ss.SSS"
+    final startParts = absence.heureDebut?.split(':') ?? ['0', '0', '0'];
+    final endParts = absence.heureFin?.split(':') ?? ['0', '0', '0'];
+    final startHour = int.parse(startParts[0]);
+    final startMinute = int.parse(startParts[1].split('.')[0]);
+    final endHour = int.parse(endParts[0]);
+    final endMinute = int.parse(endParts[1].split('.')[0]);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Justifier une absence"),
         backgroundColor: AppColors.primaryColor,
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      body: SingleChildScrollView( // Ajout de SingleChildScrollView pour permettre le défilement
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -39,17 +47,17 @@ class JustificationView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      absence.cours.nomCours,
+                      absence.cours, // Utiliser directement la chaîne
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Date : ${absence.date.day}/${absence.date.month}/${absence.date.year}",
+                      "Date : ${absence.date?.day ?? 0}/${absence.date?.month ?? 0}/${absence.date?.year ?? 0}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                     Text(
-                      "Heure : ${absence.cours.heureDebut.hour}:${absence.cours.heureDebut.minute.toString().padLeft(2, '0')} - "
-                          "${absence.cours.heureFin.hour}:${absence.cours.heureFin.minute.toString().padLeft(2, '0')}",
+                      "Heure : $startHour:${startMinute.toString().padLeft(2, '0')} - "
+                          "$endHour:${endMinute.toString().padLeft(2, '0')}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ],
@@ -154,7 +162,17 @@ class JustificationView extends StatelessWidget {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    controller.submitJustification(absence.id.toString());
+                    if (absence.id != null) {
+                      controller.submitJustification(absence.id!);
+                    } else {
+                      Get.snackbar(
+                        'Erreur',
+                        'ID de la présence manquant',
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.brown.shade900,
@@ -165,7 +183,7 @@ class JustificationView extends StatelessWidget {
                 ),
               ),
 
-              const SizedBox(height: 16), // Espace supplémentaire en bas pour éviter que le bouton soit collé au bord
+              const SizedBox(height: 16), // Espace supplémentaire en bas
             ],
           ),
         ),

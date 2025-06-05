@@ -1,47 +1,33 @@
-import 'package:flutter/material.dart';
-
 class Cours {
-  final int? id;
-  final String nomCours;
+  final String? id;
   final DateTime date;
-  final int duree;
-  final TimeOfDay heureDebut;
-  final TimeOfDay heureFin;
+  final String nomCours;
+  final String heureDebut;
+  final String heureFin;
 
   Cours({
-    required this.id,
-    required this.nomCours,
+    this.id,
     required this.date,
-    required this.duree,
+    required this.nomCours,
     required this.heureDebut,
     required this.heureFin,
   });
 
   factory Cours.fromJson(Map<String, dynamic> json) {
     return Cours(
-      // id: json['id'],
-      id: int.parse(json['id'].toString()),
-      nomCours: json['nomCours'] as String,
+      id: json['id']?.toString(),
       date: DateTime.parse(json['date'] as String),
-      duree: json['duree'] as int,
-      heureDebut: _parseTimeOfDay(json['heureDebut'] as String),
-      heureFin: _parseTimeOfDay(json['heureFin'] as String),
+      nomCours: json['nomCours'] as String,
+      heureDebut: json['heureDebut'] as String,
+      heureFin: json['heureFin'] as String,
     );
   }
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'nomCours': nomCours,
     'date': date.toIso8601String(),
-    'duree': duree,
-    'heureDebut': '${heureDebut.hour}:${heureDebut.minute}',
-    'heureFin': '${heureFin.hour}:${heureFin.minute}',
+    'nomCours': nomCours,
+    'heureDebut': heureDebut,
+    'heureFin': heureFin,
   };
-
-  static TimeOfDay _parseTimeOfDay(String timeString) {
-    final parts = timeString.split(':');
-    final hour = int.parse(parts[0]);
-    final minute = int.parse(parts[1]);
-    return TimeOfDay(hour: hour, minute: minute);
-  }
 }

@@ -1,107 +1,88 @@
 {
+  "etudiants": [
+    {
+      "id": "683c2f126ab4788eded3081b",
+      "nom": "Etudiant 0",
+      "prenom": "Prenom 0",
+      "login": "ousmane",
+      "telephone": "123456",
+      "password": "pass",
+      "matricule": "MAT0",
+      "classe": "Niveau 0 Filiere 0",
+      "status": true,
+      "role": "ETUDIANT"
+    }
+  ],
   "vigiles": [
     {
-      "id": "1",
+      "id": "683c2f126ab4788eded3081c",
       "nom": "Traore",
       "prenom": "Ousmane",
       "login": "vigile",
       "telephone": "771234567",
-      "password": "pass"
-    }
-  ],
-  "etudiants": [
-    {
-      "id": "1",
-      "nom": "Diop",
-      "prenom": "Ousmane",
-      "login": "ousmane",
-      "telephone": "123456",
       "password": "pass",
-      "matricule": "M123",
-      "status": true
+      "role": "VIGILE"
     }
   ],
   "cours": [
     {
-      "id": "1",
-      "nomCours": "Angular",
-      "date": "2025-05-29T09:00:00Z",
-      "duree": 4,
-      "heureDebut": "13:00",
-      "heureFin": "17:00"
+      "id": "683c2f126ab4788eded3081d",
+      "date": "2025-06-01T10:44:25.251Z",
+      "nomCours": "Cours 0",
+      "heureDebut": "10:44:25.251",
+      "heureFin": "14:44:25.251"
     },
     {
-      "id": "2",
-      "nomCours": "Flutter",
-      "date": "2025-05-28T14:00:00Z",
-      "duree": 4,
-      "heureDebut": "14:00",
-      "heureFin": "18:00"
-    },
-    {
-      "id": "3",
-      "nomCours": "Spring Boot",
-      "date": "2025-06-01T10:00:00Z",
-      "duree": 3,
-      "heureDebut": "10:00",
-      "heureFin": "13:00"
+      "id": "683c2f126ab4788eded3081e",
+      "date": "2025-06-02T14:00:00.000Z",
+      "nomCours": "Cours 1",
+      "heureDebut": "14:00:00.000",
+      "heureFin": "18:00:00.000"
     }
   ],
   "presences": [
     {
-      "id": "1",
-      "date": "2025-05-20T00:00:00Z",
-      "typePresence": 0,
+      "id": "683c2f126ab4788eded3081f",
+      "date": null,
+      "typePresence": "ABSENT",
       "etudiant": {
-        "id": "1",
-        "nom": "Diop",
-        "prenom": "Ousmane",
-        "login": "ousmane",
-        "telephone": "123456",
-        "password": "pass",
-        "matricule": "M123",
+        "id": "683c2f126ab4788eded3081b",
+        "nom": "Etudiant 0",
+        "prenom": "Prenom 0",
+        "matricule": "MAT0",
+        "classe": "Niveau 0 Filiere 0",
         "status": true
       },
-      "cours": {
-        "id": "1",
-        "nomCours": "Angular",
-        "date": "2025-05-29T09:00:00Z",
-        "duree": 4,
-        "heureDebut": "13:00",
-        "heureFin": "17:00"
-      },
-      "vigile": null,
+      "cours": "Cours 0",
+      "heureDebut": "10:44:25.251",
+      "heureFin": "14:44:25.251",
       "justification": {
-        "reason": "hhhhhhhhhh",
-        "files": [
-          "blob:http://localhost:63243/727edd6b-5c81-486e-89cc-98588d0a9f3d",
-          "blob:http://localhost:63243/695a7459-0ea4-4cf3-bee2-4605735a8cbc"
+        "motif": "ssssssssss",
+        "justificatif": [
+          {
+            "url": "http://localhost:3000/uploads/blob:http://localhost:59235/637460e4-073b-4df4-ad86-5e2f91056425"
+          },
+          {
+            "url": "http://localhost:3000/uploads/blob:http://localhost:59235/e404261d-234c-49a1-bc8f-d88ed370a95d"
+          }
         ]
       }
     },
     {
-      "id": "2",
-      "date": "2025-05-22T00:00:00Z",
-      "typePresence": 2,
+      "id": "683c2f126ab4788eded3090f",
+      "date": null,
+      "typePresence": "RETARD",
       "etudiant": {
-        "id": "1",
-        "nom": "Diop",
-        "prenom": "Ousmane",
-        "login": "ousmane",
-        "telephone": "123456",
-        "password": "pass",
-        "matricule": "M123",
+        "id": "683c2f126ab4788eded3081b",
+        "nom": "Etudiant 0",
+        "prenom": "Prenom 0",
+        "matricule": "MAT0",
+        "classe": "Niveau 0 Filiere 0",
         "status": true
       },
-      "cours": {
-        "id": "2",
-        "nomCours": "Flutter",
-        "date": "2025-05-28T14:00:00Z",
-        "duree": 4,
-        "heureDebut": "14:00",
-        "heureFin": "18:00"
-      },
-      "vigile": null
+      "cours": "Cours 1",
+      "heureDebut": "14:00:00.000",
+      "heureFin": "18:00:00.000"
     }
   ]
 }

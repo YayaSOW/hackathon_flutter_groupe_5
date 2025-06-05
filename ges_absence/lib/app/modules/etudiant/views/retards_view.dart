@@ -21,6 +21,14 @@ class RetardsView extends GetView<RetardsController> {
               itemCount: controller.retards.length,
               itemBuilder: (context, index) {
                 final retard = controller.retards[index];
+                // Parser les heures si elles sont au format "HH:mm:ss.SSS"
+                final startParts = retard.heureDebut?.split(':') ?? ['0', '0', '0'];
+                final endParts = retard.heureFin?.split(':') ?? ['0', '0', '0'];
+                final startHour = int.parse(startParts[0]);
+                final startMinute = int.parse(startParts[1].split('.')[0]);
+                final endHour = int.parse(endParts[0]);
+                final endMinute = int.parse(endParts[1].split('.')[0]);
+
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   elevation: 4,
@@ -29,13 +37,13 @@ class RetardsView extends GetView<RetardsController> {
                   child: ListTile(
                     leading: const Icon(Icons.access_time, color: AppColors.secondaryColor),
                     title: Text(
-                      retard.cours.nomCours,
+                      retard.cours, // Utiliser directement la chaîne
                       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
                     ),
                     subtitle: Text(
-                      "${retard.date.day}/${retard.date.month}/${retard.date.year} • Heure: "
-                      "${retard.cours.heureDebut.hour}:${retard.cours.heureDebut.minute.toString().padLeft(2, '0')} - "
-                      "${retard.cours.heureFin.hour}:${retard.cours.heureFin.minute.toString().padLeft(2, '0')}",
+                      "${retard.date?.day ?? 0}/${retard.date?.month ?? 0}/${retard.date?.year ?? 0} • Heure: "
+                      "$startHour:${startMinute.toString().padLeft(2, '0')} - "
+                      "$endHour:${endMinute.toString().padLeft(2, '0')}",
                       style: const TextStyle(color: Colors.white70),
                     ),
                   ),
