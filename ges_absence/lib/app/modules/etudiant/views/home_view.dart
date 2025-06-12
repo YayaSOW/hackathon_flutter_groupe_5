@@ -78,10 +78,10 @@ class HomeView extends GetView<HomeController> {
                           '${etudiant?.prenom} ${etudiant?.nom}',
                           style: AppTheme.titleStyle,
                         ),
-                        Text(
-                          etudiant?.telephone ?? '',
-                          style: AppTheme.subtitleStyle,
-                        ),
+                        // Text(
+                        //   etudiant?.telephone ?? '',
+                        //   style: AppTheme.subtitleStyle,
+                        // ),
                         Text(
                           etudiant?.matricule ?? '',
                           style: AppTheme.subtitleStyle,

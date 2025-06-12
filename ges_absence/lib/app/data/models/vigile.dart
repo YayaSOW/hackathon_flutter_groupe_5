@@ -1,17 +1,22 @@
-import 'package:ges_absence/app/data/models/user.dart';
+class Vigile {
+  final String? id;
+  final String nom;
+  final String prenom;
+  final String login;
+  final String telephone;
+  final String password;
 
-class Vigile extends User {
   Vigile({
-    required super.id,
-    required super.nom,
-    required super.prenom,
-    required super.login,
-    required super.telephone,
-    required super.password,
+    this.id,
+    required this.nom,
+    required this.prenom,
+    required this.login,
+    required this.telephone,
+    required this.password,
   });
 
   factory Vigile.fromJson(Map<String, dynamic> json) => Vigile(
-    id: json['id']?.toString(), // Garder comme String
+    id: json['id']?.toString(),
     nom: json['nom'],
     prenom: json['prenom'],
     login: json['login'],
