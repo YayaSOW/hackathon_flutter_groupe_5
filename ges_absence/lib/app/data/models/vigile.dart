@@ -4,7 +4,8 @@ class Vigile {
   final String prenom;
   final String login;
   final String telephone;
-  final String password;
+  final String? password;  
+  final String? role;      
 
   Vigile({
     this.id,
@@ -12,7 +13,8 @@ class Vigile {
     required this.prenom,
     required this.login,
     required this.telephone,
-    required this.password,
+    this.password,         
+    this.role,             
   });
 
   factory Vigile.fromJson(Map<String, dynamic> json) => Vigile(
@@ -21,7 +23,8 @@ class Vigile {
     prenom: json['prenom'],
     login: json['login'],
     telephone: json['telephone'],
-    password: json['password'],
+    password: json['password'], 
+    role: json['role'],         
   );
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +33,7 @@ class Vigile {
     'prenom': prenom,
     'login': login,
     'telephone': telephone,
-    'password': password,
+    'password': password, 
+    'role': role,         
   };
 }
