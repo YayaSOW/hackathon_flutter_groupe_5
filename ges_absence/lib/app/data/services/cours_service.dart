@@ -6,7 +6,8 @@ import '../models/cours.dart';
 import 'package:http/http.dart' as http;
 
 class CoursService extends GetxService {
-  final String baseUrl = 'http://localhost:3000';
+  // final String baseUrl = 'http://localhost:3000';
+  final String baseUrl = 'https://gesabsences-32iz.onrender.com/api/v1';
 
   Future<List<Cours>> getAllCours() async {
     try {

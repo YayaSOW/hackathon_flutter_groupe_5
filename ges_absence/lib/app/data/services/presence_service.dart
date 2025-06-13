@@ -1,3 +1,4 @@
+import 'package:ges_absence/app/data/enums/type_presence.dart';
 import 'package:ges_absence/app/utils/base_service.dart';
 import 'package:ges_absence/env.dart';
 import 'package:get/get.dart';
@@ -6,20 +7,26 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PresenceService extends GetxService with BaseService {
+    final String baseUrl = 'https://gesabsences-32iz.onrender.com/api/v1';
+
   Future<List<Presence>> getAbsencesByEtudiantId(String etudiantId) async {
-    final response = await http.get(Uri.parse('$baseUrl/presences'));
+  try {
+    final uri = Uri.parse('$baseUrl/presences?etudiant.id=$etudiantId&_expand=etudiant&_expand=cours');
+    print('Requête envoyée à: $uri');
+    final response = await http.get(uri);
+    print('Réponse brute: ${response.body}');
     if (response.statusCode == 200) {
-      final List data = jsonDecode(response.body);
-      return data
-          .map((json) => Presence.fromJson(json))
-          .where(
-            (presence) =>
-                presence.etudiant['id'].toString() == etudiantId &&
-                presence.typePresence.index == 0,
-          )
+      final List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Presence.fromJson(json)).toList()
+          .where((p) => p.typePresence == TypePresence.ABSENT)
           .toList();
     } else {
-      throw Exception('Erreur chargement des absences');
+      print('Erreur HTTP: ${response.statusCode} - ${response.body}');
+      return [];
     }
+  } catch (e) {
+    print('Erreur lors de la récupération des absences: $e');
+    return [];
   }
+}
 }

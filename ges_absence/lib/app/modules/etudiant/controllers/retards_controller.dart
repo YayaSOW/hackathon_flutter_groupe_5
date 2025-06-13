@@ -16,7 +16,11 @@ class RetardsController extends GetxController {
 
   Future<void> loadRetards() async {
     final etudiantId = Get.find<AuthController>().etudiant.value?.id ?? '';
-    final presences = await apiService.getPresencesForEtudiant(etudiantId);
-    retards.value = presences.where((p) => p.typePresence == TypePresence.RETARD).toList();
+    final presences = await apiService.getPresencesByTypeAndEtudiant(
+      etudiantId,
+      TypePresence.RETARD.name,
+    );
+    retards.value = presences; // Mise à jour explicite
+    print('Retards chargés: ${retards.length}'); // Débogage
   }
 }

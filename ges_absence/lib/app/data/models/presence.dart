@@ -13,7 +13,7 @@ class Presence {
   final Map<String, dynamic>? justification;
 
   Presence({
-    this.id,  
+    this.id,
     this.date,
     required this.typePresence,
     required this.etudiant,
@@ -25,7 +25,7 @@ class Presence {
   });
 
   factory Presence.fromJson(Map<String, dynamic> json) {
-    // Mapper la chaîne "ABSENT", "PRESENT", "RETARD" à l'enum
+    print('Parsing JSON: $json'); // Débogage
     TypePresence parseTypePresence(String value) {
       switch (value) {
         case 'ABSENT':
@@ -41,17 +41,25 @@ class Presence {
 
     return Presence(
       id: json['id']?.toString(),
-      date: json['date'] != null ? DateTime.parse(json['date'] as String) : null,
+      date:
+          json['date'] != null ? DateTime.parse(json['date'] as String) : null,
       typePresence: parseTypePresence(json['typePresence'] as String),
-      etudiant: json['etudiant'] as Map<String, dynamic>,
-      cours: json['cours'] as String,
+      etudiant:
+          (json['etudiant'] as Map<String, dynamic>?) ??
+          {'id': '', 'nom': '', 'prenom': ''}, // Valeur par défaut
+      cours: json['cours'] as String? ?? 'Inconnu',
       heureDebut: json['heureDebut'] as String?,
       heureFin: json['heureFin'] as String?,
-      vigile: json['vigile'] != null ? User.fromJson(json['vigile'] as Map<String, dynamic>) : null,
-      justification: json['justification'] != null ? json['justification'] as Map<String, dynamic> : null,
+      vigile:
+          json['vigile'] != null
+              ? User.fromJson(json['vigile'] as Map<String, dynamic>)
+              : null,
+      justification:
+          json['justification'] != null
+              ? json['justification'] as Map<String, dynamic>
+              : null,
     );
   }
-
   Map<String, dynamic> toJson() => {
     'id': id,
     'date': date?.toIso8601String(),

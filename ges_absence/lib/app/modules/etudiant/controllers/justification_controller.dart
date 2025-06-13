@@ -5,7 +5,7 @@ import 'package:ges_absence/app/data/services/api_service.dart';
 import 'package:ges_absence/app/routes/app_routes.dart';
 
 class JustificationController extends GetxController {
-  var selectedFiles = RxList<File>([]); // Liste de fichiers
+  var selectedFiles = RxList<File>([]); // Liste de fichiers observable
   final reasonController = TextEditingController();
   final ApiService apiService = Get.find();
 
@@ -42,12 +42,11 @@ class JustificationController extends GetxController {
     }
 
     try {
-      // Préparer les chemins des fichiers pour l'envoi
-      final filePaths = selectedFiles.map((file) => file.path).toList();
+      // Appeler la méthode mise à jour de l'API avec les fichiers directement
       await apiService.submitJustification(
         presenceId: presenceId,
         reason: reasonController.text,
-        filePaths: filePaths, // Envoie une liste de chemins
+        files: selectedFiles, // Passer la liste de File directement
       );
 
       // Afficher le message de succès

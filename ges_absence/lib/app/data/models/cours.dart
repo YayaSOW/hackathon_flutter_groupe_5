@@ -15,11 +15,11 @@ class Cours {
 
   factory Cours.fromJson(Map<String, dynamic> json) {
     return Cours(
-      id: json['id']?.toString(),
-      date: DateTime.parse(json['date'] as String),
-      nomCours: json['nomCours'] as String,
-      heureDebut: json['heureDebut'] as String,
-      heureFin: json['heureFin'] as String,
+      id: json['id'],
+      date: DateTime.parse(json['date']),
+      nomCours: json['nomCours'],
+      heureDebut: json['heureDebut'],
+      heureFin: json['heureFin'],
     );
   }
 

@@ -1,7 +1,7 @@
-  import 'package:ges_absence/app/modules/auth/controllers/auth_controller.dart';
 import 'package:get/get.dart';
-import '../../../data/models/presence.dart';
-import '../../../data/services/api_service.dart';
+import 'package:ges_absence/app/modules/auth/controllers/auth_controller.dart';
+import 'package:ges_absence/app/data/models/presence.dart';
+import 'package:ges_absence/app/data/services/api_service.dart';
 
 class HomeController extends GetxController {
   final ApiService apiService = Get.find();
@@ -19,7 +19,7 @@ class HomeController extends GetxController {
       isLoading(true);
       final etudiantId = Get.find<AuthController>().etudiant.value?.id;
       if (etudiantId != null) {
-        final result = await apiService.getPresencesForEtudiant(etudiantId.toString());
+        final result = await apiService.getPresencesForEtudiant(etudiantId.toString()); 
         presences.assignAll(result);
       }
     } catch (e) {
