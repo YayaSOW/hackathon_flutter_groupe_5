@@ -13,7 +13,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiService extends GetxService with BaseService {
   final storage = FlutterSecureStorage();
-  final String baseUrl = 'https://gesabsences-32iz.onrender.com/api/v1';
+  // final String baseUrl = 'https://gesabsences-32iz.onrender.com/api/v1';
   // final String baseUrl;
 
   // ApiService({this.baseUrl = 'http://10.0.2.2:3000'});
@@ -453,25 +453,50 @@ class ApiService extends GetxService with BaseService {
     }
   }
 
+  // Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
+  //   try {
+  //     final uri = Uri.parse('$baseUrl/etudiants');
+  //     final response = await http.get(
+  //       uri,
+  //       headers: {'Accept': 'application/json'},
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final List<dynamic> data = jsonDecode(response.body);
+  //       final etudiant = data.firstWhere(
+  //         (item) => item['matricule'] == matricule,
+  //         orElse: () => null,
+  //       );
+  //       if (etudiant != null) {
+  //         return Etudiant.fromJson(etudiant);
+  //       }
+  //       print('Aucun étudiant trouvé pour ce matricule');
+  //     } else {
+  //       print('Erreur HTTP: ${response.statusCode}');
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     print('Erreur lors de la recherche par matricule: ${e.toString()}');
+  //     return null;
+  //   }
+  // }
   Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
     try {
-      final uri = Uri.parse('$baseUrl/etudiants');
+      final uri = Uri.parse('$baseUrl/etudiants/matricule/$matricule');
       final response = await http.get(
         uri,
         headers: {'Accept': 'application/json'},
       );
+      print('Requête envoyée à: $uri');
+      print('Réponse brute: ${response.body}');
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        final etudiant = data.firstWhere(
-          (item) => item['matricule'] == matricule,
-          orElse: () => null,
-        );
-        if (etudiant != null) {
-          return Etudiant.fromJson(etudiant);
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final Map<String, dynamic>? results = data['results'];
+        if (results != null) {
+          return Etudiant.fromJson(results); // Parsage du résultat
         }
         print('Aucun étudiant trouvé pour ce matricule');
       } else {
-        print('Erreur HTTP: ${response.statusCode}');
+        print('Erreur HTTP: ${response.statusCode} - ${response.body}');
       }
       return null;
     } catch (e) {

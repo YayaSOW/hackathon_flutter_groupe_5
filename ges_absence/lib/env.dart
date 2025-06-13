@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class Env {
+  // Plus Besoin c'était pour les mock(db.json)
   static String get baseUrl {
     if (kIsWeb) {
       // Exécution dans un navigateur
