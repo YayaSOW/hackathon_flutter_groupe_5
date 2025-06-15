@@ -443,15 +443,31 @@ class ApiService extends GetxService with BaseService {
     }
   }
 
-  Future<Etudiant?> getEtudiantByQR(String qrData) async {
-    try {
-      final matricule = qrData.split(' - ').last;
-      return await getEtudiantByMatricule(matricule);
-    } catch (e) {
-      print('Erreur lors de la récupération par QR: ${e.toString()}');
-      return null;
+ Future<Etudiant?> getEtudiantByQR(String code) async {
+  try {
+    final uri = Uri.parse('$baseUrl/presences/etudiant/$code');
+    final response = await http.get(
+      uri,
+      headers: {'Accept': 'application/json'},
+    );
+    print('Requête envoyée à: $uri');
+    print('Réponse brute: ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final Map<String, dynamic>? results = data['results'];
+      if (results != null) {
+        return Etudiant.fromJson(results);
+      }
+      print('Aucun étudiant trouvé pour ce QR code');
+    } else {
+      print('Erreur HTTP: ${response.statusCode} - ${response.body}');
     }
+    return null;
+  } catch (e) {
+    print('Erreur lors de la recherche par QR code: ${e.toString()}');
+    return null;
   }
+}
 
   // Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
   //   try {
@@ -479,31 +495,31 @@ class ApiService extends GetxService with BaseService {
   //     return null;
   //   }
   // }
-  Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
-    try {
-      final uri = Uri.parse('$baseUrl/etudiants/matricule/$matricule');
-      final response = await http.get(
-        uri,
-        headers: {'Accept': 'application/json'},
-      );
-      print('Requête envoyée à: $uri');
-      print('Réponse brute: ${response.body}');
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final Map<String, dynamic>? results = data['results'];
-        if (results != null) {
-          return Etudiant.fromJson(results); // Parsage du résultat
-        }
-        print('Aucun étudiant trouvé pour ce matricule');
-      } else {
-        print('Erreur HTTP: ${response.statusCode} - ${response.body}');
+Future<Etudiant?> getEtudiantByMatricule(String matricule) async {
+  try {
+    final uri = Uri.parse('$baseUrl/presences/etudiant/$matricule');
+    final response = await http.get(
+      uri,
+      headers: {'Accept': 'application/json'},
+    );
+    print('Requête envoyée à: $uri');
+    print('Réponse brute: ${response.body}');
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      final Map<String, dynamic>? results = data['results'];
+      if (results != null) {
+        return Etudiant.fromJson(results); // Parsage du résultat
       }
-      return null;
-    } catch (e) {
-      print('Erreur lors de la recherche par matricule: ${e.toString()}');
-      return null;
+      print('Aucun étudiant trouvé pour ce matricule');
+    } else {
+      print('Erreur HTTP: ${response.statusCode} - ${response.body}');
     }
+    return null;
+  } catch (e) {
+    print('Erreur lors de la recherche par matricule: ${e.toString()}');
+    return null;
   }
+}
 
   Future<void> markPresence(String etudiantId, String typePresence) async {
     try {

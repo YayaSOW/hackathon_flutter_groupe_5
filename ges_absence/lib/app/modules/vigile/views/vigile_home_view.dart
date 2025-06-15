@@ -13,105 +13,118 @@ class VigileHomeView extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Obx(() {
-          final vigile = authController.vigile.value;
-          if (vigile == null) return const Text('');
-          return Text(
-            '${vigile.prenom} ${vigile.nom} - ${vigile.login}',
-            style: AppTheme.appBarStyle,
-          );
-        }),
-        backgroundColor: const Color(0xFF8B4513),
-        leading: Builder(
-          builder: (context) => IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          ),
-        ),
+        title: Text('Mon espace vigile', style: AppTheme.appBarStyle),
+        backgroundColor: AppColors.primaryColor,
       ),
-      drawer: Obx(() {
-        final vigile = authController.vigile.value;
-        return Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Color(0xFF8B4513),
-                ),
+              // ====== LOGO AND TITLE ======
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                color: const Color(0xFFED9C37),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${vigile?.prenom ?? ''} ${vigile?.nom ?? ''}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Image.asset(
+                      'assets/images/ism_logo.png',
+                      height: 150,
+                      width: 150,
+                      fit: BoxFit.contain,
                     ),
-                    Text(
-                      vigile?.login ?? '',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "Mon espace vigile",
+                      style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: const Text('Se déconnecter'),
+
+              // ====== INFOS VIGILE ======
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20), 
+                    topRight: Radius.circular(20), 
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.grey,
+                      child: Icon(Icons.person, color: Colors.white, size: 30),
+                    ),
+                    const SizedBox(width: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(() {
+                          final vigile = authController.vigile.value;
+                          return Text(
+                            '${vigile?.prenom ?? ''} ${vigile?.nom ?? ''}',
+                            style: AppTheme.titleStyle,
+                          );
+                        }),
+                        Obx(() {
+                          final vigile = authController.vigile.value;
+                          return Text(
+                            vigile?.login ?? '',
+                            style: AppTheme.subtitleStyle,
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // ====== LISTE MENU ======
+              _buildMenuItem(
+                icon: Icons.qr_code_scanner,
+                label: 'Scanner un étudiant',
+                onTap: () => Get.toNamed(AppRoutes.VIGILE_SCAN),
+              ),
+              _buildMenuItem(
+                icon: Icons.logout,
+                label: 'Me Déconnecter',
+                color: Colors.red,
                 onTap: () => authController.logout(),
               ),
+              const SizedBox(height: 16),
             ],
           ),
-        );
-      }),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/ism_logo.png',
-              height: 100,
-              width: 100,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Get.toNamed(AppRoutes.VIGILE_SCAN),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.secondaryColor,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.qr_code_scanner),
-                  SizedBox(width: 10),
-                  Text('Scanner un étudiant'),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => authController.logout(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(Icons.logout),
-                  SizedBox(width: 10),
-                  Text('Se déconnecter'),
-                ],
-              ),
-            ),
-          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    Color color = Colors.black,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Card(
+        elevation: 4,
+        shadowColor: Colors.grey.withOpacity(0.3),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: ListTile(
+          leading: Icon(icon, color: color),
+          title: Text(
+            label,
+            style: TextStyle(color: color, fontWeight: FontWeight.w600),
+          ),
+          onTap: onTap,
         ),
       ),
     );

@@ -12,33 +12,33 @@ class VigileHomeController extends GetxController {
     isScanning.value = !isScanning.value;
   }
 
-  Future<void> scanQRCode(String code) async {
-    try {
-      final etudiant = await apiService.getEtudiantByQR(code);
-      if (etudiant != null) {
-        scannedEtudiant.value = etudiant;
-        Get.toNamed(AppRoutes.VIGILE_ETUDIANT);
-      } else {
-        Get.snackbar('Erreur', 'Étudiant non trouvé');
-      }
-    } catch (e) {
-      Get.snackbar('Erreur', 'Échec du scan: $e');
+Future<void> scanQRCode(String code) async {
+  try {
+    final etudiant = await apiService.getEtudiantByQR(code);
+    if (etudiant != null) {
+      scannedEtudiant.value = etudiant;
+      Get.toNamed(AppRoutes.VIGILE_ETUDIANT);
+    } else {
+      Get.snackbar('Erreur', 'Letudiant nas Pas de cours Aujourdhui');
     }
+  } catch (e) {
+    Get.snackbar('Erreur', 'Échec du scan : ${e.toString()}');
   }
+}
 
-  Future<void> searchByMatricule(String matricule) async {
-    try {
-      final etudiant = await apiService.getEtudiantByMatricule(matricule);
-      if (etudiant != null) {
-        scannedEtudiant.value = etudiant;
-        Get.toNamed(AppRoutes.VIGILE_ETUDIANT);
-      } else {
-        Get.snackbar('Erreur', 'Étudiant non trouvé');
-      }
-    } catch (e) {
-      Get.snackbar('Erreur', 'Échec de la recherche: $e');
+Future<void> searchByMatricule(String matricule) async {
+  try {
+    final etudiant = await apiService.getEtudiantByMatricule(matricule);
+    if (etudiant != null) {
+      scannedEtudiant.value = etudiant;
+      Get.toNamed(AppRoutes.VIGILE_ETUDIANT);
+    } else {
+      Get.snackbar('Erreur', 'Letudiant nas Pas de cours Aujourdhui');
     }
+  } catch (e) {
+    Get.snackbar('Erreur', 'Échec de la recherche : ${e.toString()}');
   }
+}
 
   Future<void> markPresence(String etudiantId, String typePresence) async {
     try {

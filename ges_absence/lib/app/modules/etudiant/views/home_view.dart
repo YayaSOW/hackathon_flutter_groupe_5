@@ -110,6 +110,12 @@ class HomeView extends GetView<HomeController> {
                 label: 'Mes Retards',
                 onTap: () => Get.toNamed(AppRoutes.RETARDS),
               ),
+               _buildMenuItem(
+                icon: Icons.location_on,
+                label: 'Itinéraire vers ISM',
+                color: const Color.fromARGB(255, 0, 1, 1),
+                onTap: () => Get.toNamed(AppRoutes.GEOLOCALISATION),
+              ),
               _buildMenuItem(
                 icon: Icons.logout,
                 label: 'Me Déconnecter',

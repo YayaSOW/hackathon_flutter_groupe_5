@@ -20,20 +20,32 @@ class VigileScanView extends GetView<VigileHomeController> {
               Expanded(
                 flex: 5,
                 child: controller.isScanning.value
-                ? MobileScanner(
-                onDetect: (BarcodeCapture capture) {
-                  final List<Barcode> barcodes = capture.barcodes;
-                  for (final barcode in barcodes) {
-                    final String? code = barcode.rawValue;
-                    if (code != null) {
-                      controller.scanQRCode(code);
-                      controller.toggleScanMode(); 
-                      break; 
-                    }
-                  }
-                },
-               )
-
+                    ? Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          MobileScanner(
+                            onDetect: (BarcodeCapture capture) {
+                              final List<Barcode> barcodes = capture.barcodes;
+                              for (final barcode in barcodes) {
+                                final String? code = barcode.rawValue;
+                                if (code != null) {
+                                  controller.scanQRCode(code);
+                                  controller.toggleScanMode(); 
+                                  break; 
+                                }
+                              }
+                            },
+                          ),
+                          Container(
+                            width: 250,
+                            height: 250,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green, width: 2),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ],
+                      )
                     : Padding(
                         padding: const EdgeInsets.all(20),
                         child: TextFormField(
@@ -69,7 +81,6 @@ class VigileScanView extends GetView<VigileHomeController> {
                   ),
                 ),
               ),
-
             ],
           )),
     );

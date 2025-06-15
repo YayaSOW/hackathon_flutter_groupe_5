@@ -1,4 +1,6 @@
+import 'package:ges_absence/app/bindings/geolocalisation_binding.dart';
 import 'package:ges_absence/app/modules/etudiant/views/absence_view.dart';
+import 'package:ges_absence/app/modules/etudiant/views/geolocalisation_view.dart';
 import 'package:ges_absence/app/modules/vigile/views/vigile_etudiant_view.dart';
 import 'package:ges_absence/app/modules/vigile/views/vigile_home_view.dart';
 import 'package:ges_absence/app/modules/vigile/views/vigile_scan_view.dart';
@@ -56,11 +58,16 @@ class AppPages {
           page: () => VigileScanView(),
           binding: VigileBinding(),
         ),
-        GetPage(
+    GetPage(
           name: AppRoutes.VIGILE_ETUDIANT,
           page: () => VigileEtudiantView(),
           binding: VigileBinding(),
         ),
+    GetPage(
+      name: AppRoutes.GEOLOCALISATION,
+      page: () => GeolocalisationView(),
+      binding: GeolocalisationBinding(),
+    ),
   ];
 
 }

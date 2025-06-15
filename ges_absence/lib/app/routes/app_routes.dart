@@ -9,4 +9,5 @@ abstract class AppRoutes {
   static const JUSTIFICATION = '/justification';
     static const VIGILE_ETUDIANT = '/vigile-etudiant';
     static const VIGILE_SCAN = '/vigile-scan';
+  static const GEOLOCALISATION = '/geolocalisation';
 }
