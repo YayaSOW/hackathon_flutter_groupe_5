@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PresenceService extends GetxService with BaseService {
-    final String baseUrl = 'https://gesabsences-32iz.onrender.com/api/v1';
 
   Future<List<Presence>> getAbsencesByEtudiantId(String etudiantId) async {
   try {

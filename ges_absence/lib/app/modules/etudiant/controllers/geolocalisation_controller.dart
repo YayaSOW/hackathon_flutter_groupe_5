@@ -63,5 +63,4 @@ class GeolocalisationController extends GetxController {
       Get.snackbar('Erreur', 'Erreur lors de la récupération de l\'itinéraire: $e');
     }
   }
-}  
-//-17.457746,14.690543
+} 
